@@ -1,0 +1,18 @@
+includes:
+    - vendor/pepakriz/phpstan-exception-rules/extension.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+    level: max
+    paths:
+        - %currentWorkingDirectory%/src
+        - %currentWorkingDirectory%/tests
+    checkMissingIterableValueType: false
+#    checkGenericClassInNonGenericObjectType: false
+    exceptionRules:
+        uncheckedExceptions:
+            - LogicException
+    ignoreErrors:
+        - '#PHPDoc tag @throws with type .* is not compatible with parent#'
