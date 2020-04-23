@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Solcik\Nette\Bridges\ApplicationLatte\Filter;
+namespace Solcik\Latte\Runtime\Filter;
 
-use Brick\DateTime\ZonedDateTime;
 use Brick\Math\BigNumber;
 use Nette\StaticClass;
-use Solcik\Brick\DateTime\TimeZoneFactory;
 use Solcik\Intl\Formatter;
 
 final class TimeFilter
@@ -35,13 +33,5 @@ final class TimeFilter
     public static function secondsToHours(int $seconds): BigNumber
     {
         return Formatter::secondsToHours($seconds);
-    }
-
-
-    public static function zdtFormat(ZonedDateTime $dateTime, string $format): string
-    {
-        $dateTime = $dateTime->withTimeZoneSameInstant(TimeZoneFactory::create());
-
-        return $dateTime->toDateTimeImmutable()->format($format);
     }
 }

@@ -49,12 +49,4 @@ final class Formatter
     {
         return BigDecimal::of($seconds)->dividedBy(3600, 2, RoundingMode::HALF_UP);
     }
-
-
-    public static function percentage(BigDecimal $number, int $scale = 0): string
-    {
-        $number = $number->withPointMovedRight(2)->dividedBy(BigDecimal::one(), $scale, RoundingMode::CEILING);
-
-        return $number . '%';
-    }
 }
