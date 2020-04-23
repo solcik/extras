@@ -19,6 +19,7 @@ final class Form extends NetteForm
         return $input;
     }
 
+
     public function addNumeric(string $name, ?string $label = null): TextInput
     {
         $input = $this->addText($name, $label);

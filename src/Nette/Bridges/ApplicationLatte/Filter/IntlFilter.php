@@ -12,10 +12,12 @@ final class IntlFilter implements Filter
 {
     private IntlFormatter $intlFormatter;
 
+
     public function __construct(IntlFormatter $intlFormatter)
     {
         $this->intlFormatter = $intlFormatter;
     }
+
 
     public function install(Engine $latte): void
     {

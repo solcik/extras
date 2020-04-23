@@ -15,6 +15,7 @@ final class SchemaContainer extends BaseSchemaContainer
         $this->register($provider->getType(), $provider);
     }
 
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      *

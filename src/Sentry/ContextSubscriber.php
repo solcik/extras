@@ -17,11 +17,13 @@ final class ContextSubscriber implements EventSubscriberInterface
 
     private HubInterface $hub;
 
+
     public function __construct(IUserStorage $storage, HubInterface $hub)
     {
         $this->storage = $storage;
         $this->hub = $hub;
     }
+
 
     /**
      * @return string[]
@@ -31,6 +33,7 @@ final class ContextSubscriber implements EventSubscriberInterface
         return [StartupEvent::class => 'onStartup'];
     }
 
+
     public function onStartup(StartupEvent $event): void
     {
         $identity = $this->storage->getIdentity();
@@ -38,9 +41,11 @@ final class ContextSubscriber implements EventSubscriberInterface
         if ($identity !== null) {
             assert($identity instanceof Identity);
 
-            $this->hub->configureScope(static function (Scope $scope) use ($identity): void {
-                $scope->setUser(['email' => $identity->getEmail()]);
-            });
+            $this->hub->configureScope(
+                static function (Scope $scope) use ($identity): void {
+                    $scope->setUser(['email' => $identity->getEmail()]);
+                }
+            );
         }
     }
 }

@@ -24,10 +24,11 @@ final class TemplateFactory extends NetteTemplateFactory
     /**
      * @var string[]
      */
-    private array $langs = [];
+    private array $languages = [];
+
 
     /**
-     * @param string[] $langs
+     * @param string[] $languages
      */
     public function __construct(
         ILatteFactory $latteFactory,
@@ -35,27 +36,23 @@ final class TemplateFactory extends NetteTemplateFactory
         User $user,
         IStorage $cacheStorage,
         ITranslator $translator,
-        array $langs,
+        array $languages,
         string $rmsUrl
     ) {
         parent::__construct(
             $latteFactory,
             $httpRequest,
             $user,
-            $cacheStorage
+            $cacheStorage,
         );
 
         $this->translator = $translator;
-        $this->langs = $langs;
+        $this->languages = $languages;
         $this->rmsUrl = $rmsUrl;
     }
 
-    public function createTemplate(?Control $control = null, ?string $class = null): ITemplate
-    {
-        return $this->createTemplateOld($control, $class);
-    }
 
-    public function createTemplateOld(?Control $control = null, ?string $class = null): ITemplate
+    public function createTemplate(?Control $control = null, ?string $class = null): ITemplate
     {
         /** @var Template $template */
         $template = parent::createTemplate($control);
@@ -67,7 +64,7 @@ final class TemplateFactory extends NetteTemplateFactory
         unset($template->user);
 
         $template->_lang = $this->translator->getLocale();
-        $template->_langs = $this->langs;
+        $template->_langs = $this->languages;
         $template->_rmsUrl = $this->rmsUrl;
 
         return $template;

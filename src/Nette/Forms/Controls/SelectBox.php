@@ -36,10 +36,8 @@ final class SelectBox extends ChoiceControl
      */
     private $prompt = false;
 
-    /**
-     * @var array
-     */
     private array $optionAttributes = [];
+
 
     /**
      * @param string|object $label
@@ -49,15 +47,29 @@ final class SelectBox extends ChoiceControl
         parent::__construct($label, $items);
 
         $this->setOption('type', 'select');
-        $this->addCondition(function () {
-            return $this->prompt === false
-                && $this->options
-                && $this->control->size < 2;
-        })->addRule(Form::FILLED, Validator::$messages[self::VALID]);
+        $this->addCondition(
+            function () {
+                return $this->prompt === false
+                    && $this->options
+                    && $this->control->size < 2;
+            }
+        )->addRule(Form::FILLED, Validator::$messages[self::VALID]);
 
         $this->setHtmlAttribute('size', null);
         $this->setTranslator(null);
     }
+
+
+    /**
+     * Returns first prompt item?
+     *
+     * @return string|object|false
+     */
+    public function getPrompt()
+    {
+        return $this->prompt;
+    }
+
 
     /**
      * Sets first prompt item in select box.
@@ -73,15 +85,6 @@ final class SelectBox extends ChoiceControl
         return $this;
     }
 
-    /**
-     * Returns first prompt item?
-     *
-     * @return string|object|false
-     */
-    public function getPrompt()
-    {
-        return $this->prompt;
-    }
 
     /**
      * Sets options and option groups from which to choose.
@@ -108,6 +111,7 @@ final class SelectBox extends ChoiceControl
         return parent::setItems(Arrays::flatten($items, true));
     }
 
+
     /**
      * Generates control's HTML element.
      */
@@ -115,9 +119,9 @@ final class SelectBox extends ChoiceControl
     {
         $translator = $this->getForm()->getTranslator();
 
-        $items = $this->prompt === false ? [] : ['' => $translator ? $translator->translate(
-            $this->prompt
-        ) : $this->prompt];
+        $items = $this->prompt === false ? [] : [
+            '' => $translator ? $translator->translate($this->prompt) : $this->prompt,
+        ];
         foreach ($this->options as $key => $value) {
             $items[is_array($value) ? $this->translate($key) : $key] = $this->translate($value);
         }
@@ -131,12 +135,14 @@ final class SelectBox extends ChoiceControl
         )->addAttributes(parent::getControl()->attrs);
     }
 
+
     public function addOptionAttributes(array $attributes): self
     {
         $this->optionAttributes = $attributes + $this->optionAttributes;
 
         return $this;
     }
+
 
     public function isOk(): bool
     {
@@ -146,6 +152,7 @@ final class SelectBox extends ChoiceControl
             || !$this->options
             || $this->control->size > 1;
     }
+
 
     public function getOptionAttributes(): array
     {

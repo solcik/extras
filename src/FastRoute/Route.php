@@ -12,6 +12,7 @@ final class Route
 
     private string $handler;
 
+
     public function __construct(string $method, string $path, string $handler)
     {
         $this->method = $method;
@@ -19,15 +20,18 @@ final class Route
         $this->handler = $handler;
     }
 
+
     public function getMethod(): string
     {
         return $this->method;
     }
 
+
     public function getPath(): string
     {
         return $this->path;
     }
+
 
     public function getHandler(): string
     {

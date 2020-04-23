@@ -14,11 +14,13 @@ final class RouteCollectorFactory
 
     private GroupCountBased $dataGenerator;
 
+
     public function __construct(Std $routeParser, GroupCountBased $dataGenerator)
     {
         $this->routeParser = $routeParser;
         $this->dataGenerator = $dataGenerator;
     }
+
 
     public function create(): RouteCollector
     {

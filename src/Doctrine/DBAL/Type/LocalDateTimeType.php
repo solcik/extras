@@ -17,15 +17,6 @@ final class LocalDateTimeType extends Type
      */
     public const NAME = 'brick_localdatetime';
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
@@ -37,6 +28,7 @@ final class LocalDateTimeType extends Type
         return $platform->getDateTimeTypeDeclarationSQL($fieldDeclaration);
     }
 
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
@@ -46,6 +38,7 @@ final class LocalDateTimeType extends Type
     {
         return true;
     }
+
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -73,6 +66,18 @@ final class LocalDateTimeType extends Type
             ['null', LocalDateTime::class]
         );
     }
+
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return self::NAME;
+    }
+
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint

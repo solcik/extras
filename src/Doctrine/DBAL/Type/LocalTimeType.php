@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Solcik\Doctrine\DBAL\Type;
 
 use Brick\DateTime\LocalTime;
-use DateTimeImmutable;
+use DateTime;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -17,15 +17,6 @@ final class LocalTimeType extends Type
      */
     public const NAME = 'brick_localtime';
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
@@ -37,6 +28,7 @@ final class LocalTimeType extends Type
         return $platform->getTimeTypeDeclarationSQL($fieldDeclaration);
     }
 
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
@@ -46,6 +38,7 @@ final class LocalTimeType extends Type
     {
         return true;
     }
+
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -70,6 +63,18 @@ final class LocalTimeType extends Type
         throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', LocalTime::class]);
     }
 
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return self::NAME;
+    }
+
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
@@ -86,7 +91,7 @@ final class LocalTimeType extends Type
             return $value;
         }
 
-        $dateTime = DateTimeImmutable::createFromFormat('!' . $platform->getTimeFormatString(), $value);
+        $dateTime = DateTime::createFromFormat('!' . $platform->getTimeFormatString(), $value);
         if ($dateTime === false) {
             throw ConversionException::conversionFailedFormat(
                 $value,

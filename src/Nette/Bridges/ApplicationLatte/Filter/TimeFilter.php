@@ -19,20 +19,24 @@ final class TimeFilter
         return Formatter::timeS($seconds);
     }
 
+
     public static function timeMS(int $seconds): string
     {
         return Formatter::timeMS($seconds);
     }
+
 
     public static function timeHMS(int $seconds): string
     {
         return Formatter::timeHMS($seconds);
     }
 
+
     public static function secondsToHours(int $seconds): BigNumber
     {
         return Formatter::secondsToHours($seconds);
     }
+
 
     public static function zdtFormat(ZonedDateTime $dateTime, string $format): string
     {

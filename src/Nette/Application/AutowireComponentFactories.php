@@ -87,16 +87,6 @@ trait AutowireComponentFactories
     }
 
 
-    protected function getComponentFactoriesLocator(): Container
-    {
-        if ($this->autowireComponentFactoriesLocator === null) {
-            $this->injectComponentFactories($this->getPresenter()->getContext());
-        }
-
-        return $this->autowireComponentFactoriesLocator;
-    }
-
-
     /**
      * @throws UnexpectedValueException
      */
@@ -131,6 +121,16 @@ trait AutowireComponentFactories
         }
 
         return null;
+    }
+
+
+    protected function getComponentFactoriesLocator(): Container
+    {
+        if ($this->autowireComponentFactoriesLocator === null) {
+            $this->injectComponentFactories($this->getPresenter()->getContext());
+        }
+
+        return $this->autowireComponentFactoriesLocator;
     }
 
 

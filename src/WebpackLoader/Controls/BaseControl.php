@@ -11,12 +11,8 @@ abstract class BaseControl extends Control
 {
     protected string $wwwDir;
 
-    /**
-     * @var array
-     */
-    protected array
+    protected array $webpackStats = [];
 
- $webpackStats = [];
 
     public function setWebpackStats(array $webpackStats): self
     {
@@ -25,6 +21,7 @@ abstract class BaseControl extends Control
         return $this;
     }
 
+
     public function setWWWDir(string $wwwDir): self
     {
         $this->wwwDir = $wwwDir;
@@ -32,13 +29,15 @@ abstract class BaseControl extends Control
         return $this;
     }
 
-    /**
-     * Get html element including generated content
-     */
-    abstract public function getElement(string $source, bool $inline = false): ?Html;
 
     public function render(string $name, bool $inline = false): void
     {
         echo $this->getElement($name, $inline), PHP_EOL;
     }
+
+
+    /**
+     * Get html element including generated content
+     */
+    abstract public function getElement(string $source, bool $inline = false): ?Html;
 }

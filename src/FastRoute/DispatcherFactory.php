@@ -8,17 +8,23 @@ use FastRoute\Dispatcher;
 use FastRoute\Dispatcher\GroupCountBased;
 use FastRoute\RouteCollector;
 use Nette\Caching\Cache;
+use Nette\Caching\IStorage;
 
 final class DispatcherFactory
 {
     private Cache $cache;
 
-    public function __construct(Cache $cache)
+
+    public function __construct(IStorage $storage)
     {
-        $this->cache = $cache;
+        $this->cache = new Cache($storage, 'http.api.dispatcher');
     }
 
-    public function create(RouteCollector $collector, array $routesData, bool $cache = false): Dispatcher
+
+    /**
+     * @param Route[] $routes
+     */
+    public function create(RouteCollector $collector, array $routes, bool $cache = false): Dispatcher
     {
         $data = null;
 
@@ -27,16 +33,20 @@ final class DispatcherFactory
         }
 
         if ($data === null) {
-            foreach ($routesData as [$httpMethod, $route, $handler]) {
-                $collector->addRoute($httpMethod, $route, $handler);
+            foreach ($routes as $route) {
+                $collector->addRoute($route->getMethod(), $route->getPath(), $route->getHandler());
             }
 
             $data = $collector->getData();
 
             if ($cache) {
-                $this->cache->save('routes', $data, [
-                    Cache::FILES => [__DIR__ . '/../../../app-api/config/routes.php'],
-                ]);
+                $this->cache->save(
+                    'routes',
+                    $data,
+                    [
+                        Cache::FILES => [__DIR__ . '/../../../config/api/config/routes.php'],
+                    ]
+                );
             }
         }
 

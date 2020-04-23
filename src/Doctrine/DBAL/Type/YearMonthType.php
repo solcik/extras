@@ -17,15 +17,6 @@ final class YearMonthType extends StringType
      */
     public const NAME = 'brick_yearmonth';
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
@@ -37,6 +28,7 @@ final class YearMonthType extends StringType
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
 
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
@@ -47,6 +39,7 @@ final class YearMonthType extends StringType
         return 7;
     }
 
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
@@ -56,6 +49,7 @@ final class YearMonthType extends StringType
     {
         return true;
     }
+
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -73,6 +67,7 @@ final class YearMonthType extends StringType
 
         return (string) $value;
     }
+
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -95,5 +90,16 @@ final class YearMonthType extends StringType
         } catch (DateTimeException $e) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), 'YYYY-MM');
         }
+    }
+
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return self::NAME;
     }
 }

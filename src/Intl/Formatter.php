@@ -17,6 +17,7 @@ final class Formatter
         return (string) $seconds;
     }
 
+
     public static function timeMS(int $seconds): string
     {
         $negative = $seconds < 0 ? '-' : '';
@@ -27,6 +28,7 @@ final class Formatter
 
         return "${negative}${minutes}:${modSecondsStr}";
     }
+
 
     public static function timeHMS(int $seconds): string
     {
@@ -42,10 +44,12 @@ final class Formatter
         return "${negative}${hours}:${modMinutesStr}:${modSecondsStr}";
     }
 
+
     public static function secondsToHours(int $seconds): BigDecimal
     {
         return BigDecimal::of($seconds)->dividedBy(3600, 2, RoundingMode::HALF_UP);
     }
+
 
     public static function percentage(BigDecimal $number, int $scale = 0): string
     {
