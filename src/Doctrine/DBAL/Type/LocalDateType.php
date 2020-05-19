@@ -25,7 +25,7 @@ final class LocalDateType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return $platform->getDateTimeTypeDeclarationSQL($fieldDeclaration);
+        return $platform->getDateTypeDeclarationSQL($fieldDeclaration);
     }
 
 
