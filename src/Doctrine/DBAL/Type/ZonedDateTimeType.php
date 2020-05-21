@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Solcik\Doctrine\DBAL\Type;
 
+use Brick\DateTime\TimeZone;
 use Brick\DateTime\ZonedDateTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -16,6 +17,8 @@ final class ZonedDateTimeType extends Type
      * @var string
      */
     public const NAME = 'brick_zoneddatetime';
+
+    public static string $timezone = 'Z';
 
 
     /**
@@ -105,6 +108,7 @@ final class ZonedDateTimeType extends Type
             );
         }
 
-        return ZonedDateTime::fromDateTime($val);
+        $zdt = ZonedDateTime::fromDateTime($val);
+        return $zdt->withTimeZoneSameInstant(TimeZone::parse(self::$timezone));
     }
 }
