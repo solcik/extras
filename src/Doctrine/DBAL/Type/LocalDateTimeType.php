@@ -23,9 +23,9 @@ final class LocalDateTimeType extends Type
      *
      * @return string
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getName()
     {
-        return $platform->getDateTimeTypeDeclarationSQL($fieldDeclaration);
+        return self::NAME;
     }
 
 
@@ -37,6 +37,17 @@ final class LocalDateTimeType extends Type
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;
+    }
+
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return string
+     */
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    {
+        return $platform->getDateTimeTypeDeclarationSQL($fieldDeclaration);
     }
 
 
@@ -69,17 +80,6 @@ final class LocalDateTimeType extends Type
 
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-
-    /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
@@ -95,9 +95,9 @@ final class LocalDateTimeType extends Type
             return $value;
         }
 
-        $val = DateTimeImmutable::createFromFormat($platform->getDateTimeFormatString(), $value);
+        $dateTime = DateTimeImmutable::createFromFormat($platform->getDateTimeFormatString(), $value);
 
-        if ($val === false) {
+        if ($dateTime === false) {
             throw ConversionException::conversionFailedFormat(
                 $value,
                 $this->getName(),
@@ -105,6 +105,6 @@ final class LocalDateTimeType extends Type
             );
         }
 
-        return LocalDateTime::fromDateTime($val);
+        return LocalDateTime::fromDateTime($dateTime);
     }
 }

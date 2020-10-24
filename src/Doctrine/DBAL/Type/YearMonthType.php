@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Solcik\Doctrine\DBAL\Type;
 
 use Brick\DateTime\DateTimeException;
+use Brick\DateTime\Parser\IsoParsers;
 use Brick\DateTime\YearMonth;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
@@ -17,28 +18,15 @@ final class YearMonthType extends StringType
      */
     public const NAME = 'brick_yearmonth';
 
-
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
      * @return string
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getName()
     {
-        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+        return self::NAME;
     }
-
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return int|null
-     */
-    public function getDefaultLength(AbstractPlatform $platform)
-    {
-        return 7;
-    }
-
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
@@ -50,6 +38,25 @@ final class YearMonthType extends StringType
         return true;
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return int|null
+     */
+    public function getDefaultLength(AbstractPlatform $platform)
+    {
+        return 7;
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return string
+     */
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    {
+        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+    }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -61,13 +68,20 @@ final class YearMonthType extends StringType
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (!$value instanceof YearMonth) {
+        if ($value === null) {
             return null;
         }
 
-        return (string) $value;
-    }
+        if ($value instanceof YearMonth) {
+            return $value->__toString();
+        }
 
+        throw ConversionException::conversionFailedInvalidType(
+            $value,
+            $this->getName(),
+            ['null', YearMonth::class]
+        );
+    }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -85,21 +99,12 @@ final class YearMonthType extends StringType
             return null;
         }
 
+        $parser = IsoParsers::yearMonth();
+
         try {
-            return YearMonth::parse($value);
+            return YearMonth::parse($value, $parser);
         } catch (DateTimeException $e) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), 'YYYY-MM');
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $parser->getPattern());
         }
-    }
-
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::NAME;
     }
 }

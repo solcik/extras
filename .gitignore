@@ -2,6 +2,7 @@
 vendor
 
 .DS_Store
+.phpunit.result.cache
 *.log
 
 composer.lock
