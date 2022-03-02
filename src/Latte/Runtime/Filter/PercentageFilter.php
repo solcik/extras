@@ -12,12 +12,10 @@ final class PercentageFilter
 {
     private IntlFormatter $intlFormatter;
 
-
     public function __construct(IntlFormatter $intlFormatter)
     {
         $this->intlFormatter = $intlFormatter;
     }
-
 
     public function __invoke(BigDecimal $number, int $scale = 0): string
     {

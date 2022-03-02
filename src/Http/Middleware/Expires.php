@@ -17,6 +17,7 @@ final class Expires implements MiddlewareInterface
     public const HEADER = 'Expires';
 
     private Clock $clock;
+
     private int $minutes;
 
     public function __construct(Clock $clock, int $minutes)

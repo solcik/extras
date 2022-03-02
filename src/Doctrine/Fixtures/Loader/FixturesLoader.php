@@ -12,9 +12,10 @@ class FixturesLoader extends Loader
 {
     private Container $container;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private array $paths;
-
 
     /**
      * @param string[] $paths
@@ -24,7 +25,6 @@ class FixturesLoader extends Loader
         $this->paths = $paths;
         $this->container = $container;
     }
-
 
     /**
      * @param string[] $paths
@@ -40,12 +40,10 @@ class FixturesLoader extends Loader
         }
     }
 
-
     public function load(): void
     {
         $this->loadPaths($this->paths);
     }
-
 
     /**
      * @return string[]
@@ -54,7 +52,6 @@ class FixturesLoader extends Loader
     {
         return $this->paths;
     }
-
 
     /**
      * @param string $class

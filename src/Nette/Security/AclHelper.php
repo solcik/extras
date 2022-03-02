@@ -38,12 +38,10 @@ final class AclHelper
 
     private User $user;
 
-
     public function __construct(User $user)
     {
         $this->user = $user;
     }
-
 
     public function checkPrivileges(Presenter $presenter): int
     {
@@ -72,7 +70,6 @@ final class AclHelper
         return $flag;
     }
 
-
     private function checkSignalPrivilege(string $resource, ?array $signal): bool
     {
         if ($signal === null) {
@@ -87,7 +84,6 @@ final class AclHelper
 
         return false;
     }
-
 
     /**
      * @return string[]

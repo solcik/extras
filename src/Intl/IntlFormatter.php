@@ -14,14 +14,12 @@ final class IntlFormatter
 {
     private string $locale;
 
-
     public function __construct(ITranslator $translator)
     {
         assert($translator instanceof Translator);
         Locale::setDefault($translator->getLocale());
         $this->locale = Locale::getDefault();
     }
-
 
     public function percentage(BigNumber $number, int $scale = 0): string
     {
@@ -30,7 +28,6 @@ final class IntlFormatter
 
         return $fmt->format($number->toFloat());
     }
-
 
     /**
      * @param BigNumber|int|float $value

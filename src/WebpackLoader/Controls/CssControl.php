@@ -16,15 +16,10 @@ final class CssControl extends BaseControl
 
     private bool $alternate = false;
 
-
-    /**
-     * Get media
-     */
     public function getMedia(): string
     {
         return $this->media;
     }
-
 
     /**
      * Set media
@@ -38,15 +33,10 @@ final class CssControl extends BaseControl
         return $this;
     }
 
-
-    /**
-     * Get type
-     */
     public function getType(): string
     {
         return $this->type;
     }
-
 
     /**
      * Set type
@@ -60,15 +50,10 @@ final class CssControl extends BaseControl
         return $this;
     }
 
-
-    /**
-     * Get title
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
-
 
     /**
      * Set title
@@ -82,7 +67,6 @@ final class CssControl extends BaseControl
         return $this;
     }
 
-
     /**
      * Is alternate ?
      */
@@ -90,7 +74,6 @@ final class CssControl extends BaseControl
     {
         return $this->alternate;
     }
-
 
     /**
      * Set alternate
@@ -103,7 +86,6 @@ final class CssControl extends BaseControl
 
         return $this;
     }
-
 
     /**
      * Get link element

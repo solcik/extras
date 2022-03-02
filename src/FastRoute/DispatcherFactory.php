@@ -14,12 +14,10 @@ final class DispatcherFactory
 {
     private Cache $cache;
 
-
     public function __construct(IStorage $storage)
     {
         $this->cache = new Cache($storage, 'http.api.dispatcher');
     }
-
 
     /**
      * @param Route[] $routes

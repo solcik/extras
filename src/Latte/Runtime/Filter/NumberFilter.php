@@ -10,12 +10,10 @@ final class NumberFilter
 {
     private IntlFormatter $intlFormatter;
 
-
     public function __construct(IntlFormatter $intlFormatter)
     {
         $this->intlFormatter = $intlFormatter;
     }
-
 
     public function __invoke($number, int $scale = 0): string
     {

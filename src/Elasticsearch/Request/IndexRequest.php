@@ -16,12 +16,9 @@ abstract class IndexRequest
         return $array;
     }
 
-
     abstract public function getId(): int;
 
-
     abstract public function getIndexName(): string;
-
 
     abstract protected function exportBody(): array;
 }

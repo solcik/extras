@@ -1,8 +1,7 @@
 <?php
 
 /**
- * This file is part of the Nette Framework (https://nette.org)
- * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ * This file is part of the Nette Framework (https://nette.org) Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
 declare(strict_types=1);
@@ -38,7 +37,6 @@ final class SelectBox extends ChoiceControl
 
     private array $optionAttributes = [];
 
-
     /**
      * @param string|object $label
      */
@@ -59,7 +57,6 @@ final class SelectBox extends ChoiceControl
         $this->setTranslator(null);
     }
 
-
     /**
      * Returns first prompt item?
      *
@@ -69,7 +66,6 @@ final class SelectBox extends ChoiceControl
     {
         return $this->prompt;
     }
-
 
     /**
      * Sets first prompt item in select box.
@@ -85,9 +81,9 @@ final class SelectBox extends ChoiceControl
         return $this;
     }
 
-
     /**
      * Sets options and option groups from which to choose.
+     *
      * @return static
      */
     public function setItems(array $items, bool $useKeys = true)
@@ -110,7 +106,6 @@ final class SelectBox extends ChoiceControl
 
         return parent::setItems(Arrays::flatten($items, true));
     }
-
 
     /**
      * Generates control's HTML element.
@@ -135,14 +130,12 @@ final class SelectBox extends ChoiceControl
         )->addAttributes(parent::getControl()->attrs);
     }
 
-
     public function addOptionAttributes(array $attributes): self
     {
         $this->optionAttributes = $attributes + $this->optionAttributes;
 
         return $this;
     }
-
 
     public function isOk(): bool
     {
@@ -152,7 +145,6 @@ final class SelectBox extends ChoiceControl
             || !$this->options
             || $this->control->size > 1;
     }
-
 
     public function getOptionAttributes(): array
     {

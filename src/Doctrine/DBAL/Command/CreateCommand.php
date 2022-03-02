@@ -23,14 +23,12 @@ final class CreateCommand extends Command
 
     private ManagerRegistry $managerRegistry;
 
-
     public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct();
 
         $this->managerRegistry = $managerRegistry;
     }
-
 
     protected function configure(): void
     {
@@ -54,7 +52,6 @@ You can also optionally specify the name of a connection to create the database 
 EOT
         );
     }
-
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

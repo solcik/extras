@@ -24,7 +24,6 @@ final class WebpackLoaderExtension extends CompilerExtension
         );
     }
 
-
     public function loadConfiguration(): void
     {
         $builder = $this->getContainerBuilder();

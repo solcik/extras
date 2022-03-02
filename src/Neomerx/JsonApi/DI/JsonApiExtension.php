@@ -23,7 +23,6 @@ final class JsonApiExtension extends CompilerExtension
         ]);
     }
 
-
     public function beforeCompile(): void
     {
         $builder = $this->getContainerBuilder();

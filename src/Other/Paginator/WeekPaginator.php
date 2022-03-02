@@ -14,6 +14,7 @@ use Solcik\Brick\DateTime\Clock;
 final class WeekPaginator implements DatePaginator
 {
     private Clock $clockProvider;
+
     private YearWeek $week;
 
     public function __construct(Clock $clockProvider, YearWeek $week)

@@ -14,6 +14,7 @@ use Solcik\Brick\DateTime\Clock;
 final class MonthPaginator implements DatePaginator
 {
     private Clock $clockProvider;
+
     private YearMonth $yearMonth;
 
     public function __construct(Clock $clockProvider, YearMonth $yearMonth)

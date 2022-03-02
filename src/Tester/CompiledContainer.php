@@ -11,7 +11,6 @@ trait CompiledContainer
 {
     protected ?Container $container = null;
 
-
     protected function getContainer(): Container
     {
         if ($this->container === null) {
@@ -21,15 +20,12 @@ trait CompiledContainer
         return $this->container;
     }
 
-
     abstract protected function createContainer(): Container;
-
 
     protected function isContainerCreated(): bool
     {
         return $this->container !== null;
     }
-
 
     protected function tearDownContainer(): void
     {
@@ -37,7 +33,6 @@ trait CompiledContainer
             $this->container = null;
         }
     }
-
 
     protected function createConfiguration(array $extensions = [], array $configs = []): Configurator
     {

@@ -22,6 +22,7 @@ final class SystemClock implements Clock
     public const ZONE = 'Europe/Prague';
 
     private TimeZone $timeZone;
+
     private BrickClock $clock;
 
     public function __construct(string $timeZone = self::ZONE)

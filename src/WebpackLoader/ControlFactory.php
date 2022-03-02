@@ -15,7 +15,6 @@ final class ControlFactory
 
     private array $styles = [];
 
-
     public function __construct(string $config, string $wwwDir)
     {
         $string = file_get_contents($config);
@@ -26,7 +25,6 @@ final class ControlFactory
         $this->wwwDir = $wwwDir;
     }
 
-
     public function createCssControl(): CssControl
     {
         $control = new CssControl();
@@ -36,7 +34,6 @@ final class ControlFactory
         return $control;
     }
 
-
     public function createJavaScriptControl(): JavaScriptControl
     {
         $control = new JavaScriptControl();
@@ -45,7 +42,6 @@ final class ControlFactory
 
         return $control;
     }
-
 
     public function getCss(string $key, bool $withFullPath = false): ?string
     {
@@ -61,7 +57,6 @@ final class ControlFactory
 
         return null;
     }
-
 
     public function getJs(string $key, bool $withFullPath = false): ?string
     {

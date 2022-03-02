@@ -27,7 +27,6 @@ class LocalDateTimeInput extends TextInput
 
     protected DateTimeParser $parser;
 
-
     public function __construct(?string $label = null, ?DateTimeParser $parser = null)
     {
         parent::__construct($label, null);
@@ -50,7 +49,6 @@ class LocalDateTimeInput extends TextInput
         $this->setHtmlType('datetime-local');
     }
 
-
     /**
      * @return static
      */
@@ -61,12 +59,10 @@ class LocalDateTimeInput extends TextInput
         return $this;
     }
 
-
     public function cleanErrors(): void
     {
         $this->isValidated = false;
     }
-
 
     public function getValue()
     {
@@ -81,7 +77,6 @@ class LocalDateTimeInput extends TextInput
 
         return LocalDateTime::parse($val, $this->parser);
     }
-
 
     public function setValue($value)
     {
@@ -98,7 +93,6 @@ class LocalDateTimeInput extends TextInput
         return $this;
     }
 
-
     public function getControl(): Html
     {
         $control = parent::getControl();
@@ -106,7 +100,6 @@ class LocalDateTimeInput extends TextInput
 
         return $control;
     }
-
 
     public function validate(): void
     {
