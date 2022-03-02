@@ -38,14 +38,12 @@ final class DropCommand extends Command
 
     private ManagerRegistry $managerRegistry;
 
-
     public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct();
 
         $this->managerRegistry = $managerRegistry;
     }
-
 
     protected function configure(): void
     {
@@ -73,7 +71,6 @@ EOT
         );
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var string|null $connectionName */
@@ -88,10 +85,22 @@ EOT
         /** @var Connection $connection */
         $connection = $this->managerRegistry->getConnection($connectionName);
 
+        $driverOptions = [];
         $params = $connection->getParams();
+
+        if (isset($params['driverOptions'])) {
+            $driverOptions = $params['driverOptions'];
+        }
+
+        // Since doctrine/dbal 2.11 master has been replaced by primary
+        if (isset($params['primary'])) {
+            $params = $params['primary'];
+            $params['driverOptions'] = $driverOptions;
+        }
 
         if (isset($params['master'])) {
             $params = $params['master'];
+            $params['driverOptions'] = $driverOptions;
         }
 
         $name = $params['path'] ?? $params['dbname'] ?? null;
