@@ -99,7 +99,7 @@ final class RequestFactory
 
     public function withBearerToken(RequestInterface $request, string $token): RequestInterface
     {
-        return $this->withAuth($request, "Bearer ${token}");
+        return $this->withAuth($request, "Bearer {$token}");
     }
 
     public function withAuth(RequestInterface $request, string $value): RequestInterface

@@ -62,12 +62,12 @@ final class ZonedDateTimeType extends Type
         }
 
         if (strpos($type, '(') !== false) {
-            return preg_replace('/\(\d+\)/', "(${precision})", $type);
+            return preg_replace('/\(\d+\)/', "({$precision})", $type);
         }
 
-        [$before, $after] = explode(' ', "${type} ");
+        [$before, $after] = explode(' ', "{$type} ");
 
-        return trim("${before}(${precision}) ${after}");
+        return trim("{$before}({$precision}) {$after}");
     }
 
     /**

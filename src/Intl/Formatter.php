@@ -25,7 +25,7 @@ final class Formatter
         $modSecondsStr = str_pad((string) $modSeconds, 2, '0', STR_PAD_LEFT);
         $minutes = (int) floor($seconds / 60);
 
-        return "${negative}${minutes}:${modSecondsStr}";
+        return "{$negative}{$minutes}:{$modSecondsStr}";
     }
 
     public static function timeHMS(int $seconds): string
@@ -39,7 +39,7 @@ final class Formatter
         $modMinutesStr = str_pad((string) $modMinutes, 2, '0', STR_PAD_LEFT);
         $hours = (int) floor($minutes / 60);
 
-        return "${negative}${hours}:${modMinutesStr}:${modSecondsStr}";
+        return "{$negative}{$hours}:{$modMinutesStr}:{$modSecondsStr}";
     }
 
     public static function secondsToHours(int $seconds): BigDecimal
