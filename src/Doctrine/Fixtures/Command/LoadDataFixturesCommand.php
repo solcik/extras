@@ -16,6 +16,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+use function assert;
+use function is_array;
+use function is_string;
+use function PHPUnit\Framework\isArray;
+
 class LoadDataFixturesCommand extends Command
 {
     /**
@@ -84,7 +89,9 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
         /** @var EntityManager $em */
         $em = $this->managerRegistry->getManager($input->getOption('em'));
 
-        if ($input->isInteractive() && !$input->getOption('append')) {
+        $append = (bool) $input->getOption('append');
+
+        if ($input->isInteractive() && !$append) {
             if (!$this->askConfirmation(
                 $input,
                 $output,
@@ -97,7 +104,8 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
         }
 
         $dirOrFile = $input->getOption('fixtures');
-        if ($dirOrFile) {
+
+        if (is_string($dirOrFile) || is_array($dirOrFile)) {
             $paths = is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
             $this->loader->loadPaths($paths);
         } else {

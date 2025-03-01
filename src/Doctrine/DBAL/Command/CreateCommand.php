@@ -61,7 +61,7 @@ EOT
 
         $hasPath = isset($params['path']);
         $name = $hasPath ? $params['path'] : ($params['dbname'] ?? false);
-        if (!$name) {
+        if ($name === false) {
             throw new \InvalidArgumentException(
                 "Connection does not contain a 'path' or 'dbname' parameter and cannot be created."
             );

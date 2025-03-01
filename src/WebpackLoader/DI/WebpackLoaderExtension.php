@@ -16,10 +16,14 @@ final class WebpackLoaderExtension extends CompilerExtension
     {
         $builder = $this->getContainerBuilder();
 
+        $wwwDir = $builder->parameters['wwwDir'];
+
+        assert(is_string($wwwDir));
+
         return Expect::structure(
             [
-                'stats' => Expect::string($builder->parameters['wwwDir'] . '/dist/asset-manifest.json'),
-                'wwwDir' => Expect::string($builder->parameters['wwwDir']),
+                'stats' => Expect::string($wwwDir . '/dist/asset-manifest.json'),
+                'wwwDir' => Expect::string($wwwDir),
             ]
         );
     }

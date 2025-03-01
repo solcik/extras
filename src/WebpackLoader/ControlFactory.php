@@ -9,8 +9,14 @@ use Solcik\WebpackLoader\Controls\JavaScriptControl;
 
 final class ControlFactory
 {
+    /**
+     * @var array<string, string>
+     */
     private array $javascripts = [];
 
+    /**
+     * @var array<string, string>
+     */
     private array $styles = [];
 
     public function __construct(

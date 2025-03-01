@@ -12,13 +12,9 @@ parameters:
         - identifier: argument.templateType
         - identifier: argument.type
         - identifier: assign.propertyType
-        - identifier: binaryOp.invalid
-        - identifier: booleanAnd.rightNotBoolean
-        - identifier: booleanNot.exprNotBoolean
         - identifier: cast.string
         - identifier: classConstant.deprecated
         - identifier: function.impossibleType
-        - identifier: if.condNotBoolean
         - identifier: method.nonObject
         - identifier: missingType.iterableValue
         - identifier: missingType.parameter
@@ -28,4 +24,3 @@ parameters:
         - identifier: property.nonObject
         - identifier: return.type
         - identifier: ternary.condNotBoolean
-        - identifier: trait.unused

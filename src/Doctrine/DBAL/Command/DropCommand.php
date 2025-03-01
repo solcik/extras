@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function is_string;
+
 final class DropCommand extends DoctrineCommand
 {
     public const int RETURN_CODE_NOT_DROP = 1;
@@ -71,7 +73,7 @@ EOT
         }
 
         $name = $params['path'] ?? ($params['dbname'] ?? false);
-        if (!$name) {
+        if ($name === false) {
             throw new \InvalidArgumentException(
                 "Connection does not contain a 'path' or 'dbname' parameter and cannot be dropped."
             );
@@ -87,7 +89,9 @@ EOT
             $params['dbname'] = $params['default_dbname'] ?? 'postgres';
         }
 
-        if (!$input->getOption('force')) {
+        $force = (bool) $input->getOption('force');
+
+        if (!$force) {
             $output->writeln(
                 '<error>ATTENTION:</error> This operation should not be executed in a production environment.'
             );

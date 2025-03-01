@@ -47,9 +47,9 @@ final class SelectBox extends ChoiceControl
         $this->setOption('type', 'select');
         $this->addCondition(
             fn (): bool => $this->prompt === false
-                && $this->options
+                && count($this->options) > 0
                 && $this->control->size < 2
-        )->addRule(Form::FILLED, Validator::$messages[self::VALID]);
+        )->addRule(Form::Filled, Validator::$messages[self::VALID]);
 
         $this->setHtmlAttribute('size', null);
         $this->setTranslator(null);
@@ -142,7 +142,7 @@ final class SelectBox extends ChoiceControl
         return $this->isDisabled()
             || $this->prompt !== false
             || $this->getValue() !== null
-            || !$this->options
+            || count($this->options) === 0
             || $this->control->size > 1;
     }
 
