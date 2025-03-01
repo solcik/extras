@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Solcik\Doctrine\Fixtures\Loader\FixturesLoader;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -89,16 +90,13 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
 
         $append = (bool) $input->getOption('append');
 
-        if ($input->isInteractive() && !$append) {
-            if (!$this->askConfirmation(
-                $input,
-                $output,
-                '<question>Careful, database will be purged. Do you want to continue y/N ?</question>',
-                false
-            )
-            ) {
-                return 1;
-            }
+        if ($input->isInteractive() && !$append && !$this->askConfirmation(
+            $input,
+            $output,
+            '<question>Careful, database will be purged. Do you want to continue y/N ?</question>',
+            false
+        )) {
+            return 1;
         }
 
         $dirOrFile = $input->getOption('fixtures');
@@ -144,7 +142,7 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
         bool $default,
     ): bool {
         $helperSet = $this->getHelperSet();
-        assert($helperSet !== null);
+        assert($helperSet instanceof HelperSet);
 
         $questionHelper = $helperSet->get('question');
         assert($questionHelper instanceof QuestionHelper);

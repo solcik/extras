@@ -34,7 +34,7 @@ final readonly class AclHelper
     /**
      * @var string
      */
-    public const string DYNAMIC_NAME_PATTERN = '#^[1-9][0-9]*\z#';
+    public const string DYNAMIC_NAME_PATTERN = '#^[1-9]\d*\z#';
 
     public function __construct(
         private User $user,
@@ -54,7 +54,7 @@ final readonly class AclHelper
             && $this->user->getLogoutReason() === User::LogoutInactivity
             && $action !== 'logout'
         ) {
-            $flag |= static::INACTIVITY;
+            $flag |= self::INACTIVITY;
         }
 
         if (!$this->user->isAllowed($resource, $action) || !$this->checkSignalPrivilege($resource, $signal)) {
@@ -74,7 +74,7 @@ final readonly class AclHelper
             return true;
         }
 
-        foreach (self::signalToActions($signal) as $action) {
+        foreach ($this->signalToActions($signal) as $action) {
             if ($this->user->isAllowed($resource, $action)) {
                 return true;
             }
@@ -86,7 +86,7 @@ final readonly class AclHelper
     /**
      * @return string[]
      */
-    private static function signalToActions(array $signal): array
+    private function signalToActions(array $signal): array
     {
         $actions = [];
         $dynamics = [];

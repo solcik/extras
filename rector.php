@@ -36,7 +36,6 @@ return RectorConfig::configure()
         //        strictBooleans:   false,
     )
     ->withComposerBased(
-        //        twig:     true,
         doctrine: true,
         phpunit: true,
     )
@@ -68,7 +67,7 @@ return RectorConfig::configure()
             LevelSetList::UP_TO_PHP_84,
         ]
     )
-    ->withTypeCoverageLevel(60)
+    ->withTypeCoverageLevel(100)
     //    ->withDeadCodeLevel(0)
-    //    ->withCodeQualityLevel(0)
+    ->withCodeQualityLevel(100)
 ;

@@ -12,6 +12,7 @@ use Nette\Forms\Controls\ChoiceControl;
 use Nette\Forms\Form;
 use Nette\Forms\Helpers;
 use Nette\Forms\Validator;
+use Nette\Localization\Translator;
 use Nette\Utils\Arrays;
 use Nette\Utils\Html;
 use Override;
@@ -52,7 +53,7 @@ final class SelectBox extends ChoiceControl
         $this->setOption('type', 'select');
         $this->addCondition(
             fn (): bool => $this->prompt === false
-                && count($this->options) > 0
+                && $this->options !== []
                 && $this->control->size < 2
         )->addRule(Form::Filled, Validator::$messages[self::VALID]);
 
@@ -124,7 +125,7 @@ final class SelectBox extends ChoiceControl
         $translator = $this->getForm()->getTranslator();
 
         $items = $this->prompt === false ? [] : [
-            '' => $translator !== null ? $translator->translate($this->prompt) : $this->prompt,
+            '' => $translator instanceof Translator ? $translator->translate($this->prompt) : $this->prompt,
         ];
         foreach ($this->options as $key => $value) {
             $items[is_array($value) ? $this->translate($key) : $key] = $this->translate($value);
@@ -154,7 +155,7 @@ final class SelectBox extends ChoiceControl
         return $this->isDisabled()
             || $this->prompt !== false
             || $this->getValue() !== null
-            || count($this->options) === 0
+            || $this->options === []
             || $this->control->size > 1;
     }
 
