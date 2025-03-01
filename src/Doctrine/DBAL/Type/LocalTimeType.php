@@ -7,95 +7,52 @@ namespace Solcik\Doctrine\DBAL\Type;
 use Brick\DateTime\LocalTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
 
 final class LocalTimeType extends Type
 {
-    /**
-     * @var string
-     */
-    public const NAME = 'brick_localtime';
+    public const string NAME = 'brick_localtime';
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return self::NAME;
+        return $platform->getTimeTypeDeclarationSQL($column);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return bool
-     */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
-    {
-        return true;
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return $platform->getTimeTypeDeclarationSQL($fieldDeclaration);
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @param LocalTime|mixed|null $value
-     *
-     * @return string|null
-     *
-     * @throws ConversionException
-     */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
-            return $value;
+            return null;
         }
 
         if ($value instanceof LocalTime) {
-            return $value->toDateTimeImmutable()->format($platform->getTimeFormatString());
+            return $value->toNativeDateTimeImmutable()->format($platform->getTimeFormatString());
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', LocalTime::class]);
+        throw InvalidType::new($value, self::NAME, [LocalTime::class]);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @param LocalTime|string|mixed|null $value
-     *
-     * @return LocalTime|null
-     *
-     * @throws ConversionException
-     */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?LocalTime
     {
-        if ($value === null || $value instanceof LocalTime) {
+        if ($value === null) {
+            return null;
+        }
+
+        if ($value instanceof LocalTime) {
             return $value;
+        }
+
+        if (!is_string($value)) {
+            return null;
         }
 
         $dateTime = DateTimeImmutable::createFromFormat('!' . $platform->getTimeFormatString(), $value);
 
         if ($dateTime === false) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $platform->getTimeFormatString()
-            );
+            throw InvalidFormat::new($value, self::NAME, $platform->getTimeFormatString());
         }
 
-        return LocalTime::fromDateTime($dateTime);
+        return LocalTime::fromNativeDateTime($dateTime);
     }
 }

@@ -8,60 +8,32 @@ use Brick\DateTime\TimeZone;
 use Brick\DateTime\ZonedDateTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
-
+use Safe\Exceptions\DatetimeException;
 use function Safe\preg_replace;
 
 final class ZonedDateTimeType extends Type
 {
-    /**
-     * @var string
-     */
-    public const NAME = 'brick_zoneddatetime';
+    public const string NAME = 'brick_zoneddatetime';
 
-    public const PRECISION = 6;
-
-    public const FORMAT = 'Y-m-d H:i:s.u e';
+    public static int $precision = 6;
 
     public static ?string $timezone = null;
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getName()
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return self::NAME;
-    }
+        $type = $platform->getDateTimeTzTypeDeclarationSQL($column);
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return bool
-     */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
-    {
-        return true;
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @return string
-     */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        $type = $platform->getDateTimeTzTypeDeclarationSQL($fieldDeclaration);
-
-        $precision = $fieldDeclaration['precision'] ?? self::PRECISION;
+        /** @var int $precision */
+        $precision = $column['precision'] ?? self::$precision;
 
         if ($precision === 0) {
             return $type;
         }
 
-        if (strpos($type, '(') !== false) {
+        if (str_contains($type, '(')) {
             return preg_replace('/\(\d+\)/', "({$precision})", $type);
         }
 
@@ -70,58 +42,40 @@ final class ZonedDateTimeType extends Type
         return trim("{$before}({$precision}) {$after}");
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @param ZonedDateTime|mixed|null $value
-     *
-     * @return string|null
-     */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
-            return $value;
+            return null;
         }
 
         if ($value instanceof ZonedDateTime) {
-            // return $value->toDateTimeImmutable()->format($platform->getDateTimeTzFormatString());
-            return $value->toDateTimeImmutable()->format(self::FORMAT);
+            return $value->toNativeDateTimeImmutable()->format($platform->getDateTimeTzFormatString());
         }
 
-        throw ConversionException::conversionFailedInvalidType(
-            $value,
-            $this->getName(),
-            ['null', ZonedDateTime::class]
-        );
+        throw InvalidType::new($value, self::NAME, [ZonedDateTime::class]);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     *
-     * @param ZonedDateTime|string|mixed|null $value
-     *
-     * @return ZonedDateTime|null
-     */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?ZonedDateTime
     {
-        if ($value === null || $value instanceof ZonedDateTime) {
+        if ($value instanceof ZonedDateTime) {
             return $value;
         }
 
-        // $val = DateTimeImmutable::createFromFormat($platform->getDateTimeTzFormatString(), $value);
-        $dateTime = DateTimeImmutable::createFromFormat(self::FORMAT, $value);
-
-        if ($dateTime === false) {
-            $dateTime = date_create_immutable($value);
+        if (!is_string($value)) {
+            return null;
         }
 
+        $dateTime = DateTimeImmutable::createFromFormat($platform->getDateTimeTzFormatString(), $value);
+
         if ($dateTime === false) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT);
+            try {
+                $dateTime = \Safe\date_create_immutable($value);
+            } catch (DatetimeException $e) {
+                throw InvalidFormat::new($value, self::NAME, null);
+            }
         }
 
-        $zdt = ZonedDateTime::fromDateTime($dateTime);
+        $zdt = ZonedDateTime::fromNativeDateTime($dateTime);
 
         if (self::$timezone === null) {
             return $zdt;
