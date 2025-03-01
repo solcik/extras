@@ -20,7 +20,7 @@ final class ZonedDateTimeMSSqlParser
     {
         static $parser;
 
-        if ($parser) {
+        if ($parser instanceof PatternParser) {
             return $parser;
         }
 

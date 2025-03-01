@@ -16,6 +16,9 @@ abstract class BaseControl extends Control
      */
     protected array $webpackStats = [];
 
+    /**
+     * @param array<string, string> $webpackStats
+     */
     public function setWebpackStats(array $webpackStats): self
     {
         $this->webpackStats = $webpackStats;

@@ -42,7 +42,11 @@ abstract class DoctrineCommand extends Command
      */
     protected function getDoctrineConnection(string $name): Connection
     {
-        return $this->getDoctrine()->getConnection($name);
+        $connection = $this->getDoctrine()->getConnection($name);
+
+        assert($connection instanceof Connection);
+
+        return $connection;
     }
 
     protected function getDoctrine(): ManagerRegistry

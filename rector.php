@@ -35,10 +35,7 @@ return RectorConfig::configure()
         //        earlyReturn:      false,
         //        strictBooleans:   false,
     )
-    ->withComposerBased(
-        doctrine: true,
-        phpunit: true,
-    )
+    ->withComposerBased(doctrine: true, phpunit: true)
     ->withRules(
         [
             //            AddVoidReturnTypeWhereNoReturnRector::class,

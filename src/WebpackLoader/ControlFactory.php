@@ -24,6 +24,7 @@ final class ControlFactory
         private readonly string $wwwDir,
     ) {
         $string = file_get_contents($config);
+        /** @var array<string, string> $webpackJson */
         $webpackJson = json_decode($string, true);
 
         $this->javascripts = $webpackJson;

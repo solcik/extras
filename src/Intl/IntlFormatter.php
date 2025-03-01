@@ -8,7 +8,10 @@ use Brick\Math\BigNumber;
 use Locale;
 use Nette\Localization\Translator as NetteTranslator;
 use NumberFormatter;
+use RuntimeException;
 use Symfony\Component\Translation\Translator;
+
+use function sprintf;
 
 final readonly class IntlFormatter
 {
@@ -26,7 +29,15 @@ final readonly class IntlFormatter
         $fmt = new NumberFormatter($this->locale, NumberFormatter::PERCENT);
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $scale);
 
-        return $fmt->format($number->toFloat());
+        $str = $fmt->format($number->toFloat());
+        if ($str === false) {
+            throw new RuntimeException(sprintf(
+                'NumberFormatter error for value: \'%s\'',
+                $number->__toString()
+            ));
+        }
+
+        return $str;
     }
 
     /**
@@ -43,6 +54,11 @@ final readonly class IntlFormatter
         $fmt->setAttribute(NumberFormatter::GROUPING_USED, 1);
         $fmt->setSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, $grouping);
 
-        return $fmt->format($value);
+        $str = $fmt->format($value);
+        if ($str === false) {
+            throw new RuntimeException(sprintf('NumberFormatter error for value: \'%s\'', $value));
+        }
+
+        return $str;
     }
 }

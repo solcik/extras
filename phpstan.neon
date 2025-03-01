@@ -11,7 +11,5 @@ parameters:
     ignoreErrors:
         - identifier: argument.templateType
         - identifier: argument.type
-        - identifier: assign.propertyType
         - identifier: missingType.iterableValue
         - identifier: missingType.parameter
-        - identifier: return.type

@@ -14,6 +14,8 @@ use Doctrine\DBAL\Types\Type;
 use Override;
 use Safe\Exceptions\DatetimeException;
 
+use function assert;
+use function is_string;
 use function Safe\date_create_immutable;
 use function Safe\preg_replace;
 
@@ -37,7 +39,11 @@ final class ZonedDateTimeType extends Type
         }
 
         if (str_contains($type, '(')) {
-            return preg_replace('/\(\d+\)/', "({$precision})", $type);
+            $replaced = preg_replace('/\(\d+\)/', "({$precision})", $type);
+
+            assert(is_string($replaced));
+
+            return $replaced;
         }
 
         [$before, $after] = explode(' ', "{$type} ");

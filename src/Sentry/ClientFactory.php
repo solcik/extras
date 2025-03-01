@@ -8,6 +8,7 @@ use Jean85\PrettyVersions;
 use Sentry\ClientInterface;
 use Sentry\SentrySdk;
 
+use function assert;
 use function Sentry\init;
 
 final class ClientFactory
@@ -27,6 +28,10 @@ final class ClientFactory
 
         $hub = SentrySdk::getCurrentHub();
 
-        return $hub->getClient();
+        $client = $hub->getClient();
+
+        assert($client instanceof ClientInterface);
+
+        return $client;
     }
 }

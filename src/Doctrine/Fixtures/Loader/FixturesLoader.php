@@ -52,7 +52,11 @@ class FixturesLoader extends Loader
     protected function createFixture(string $class): FixtureInterface
     {
         try {
-            return $this->container->getByType($class);
+            $type = $this->container->getByType($class);
+
+            assert($type instanceof FixtureInterface);
+
+            return $type;
         } catch (MissingServiceException) {
             return parent::createFixture($class);
         }

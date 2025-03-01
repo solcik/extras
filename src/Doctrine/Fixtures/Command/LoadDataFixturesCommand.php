@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 use function assert;
+use function is_bool;
 
 class LoadDataFixturesCommand extends Command
 {
@@ -149,6 +150,10 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
 
         $question = new ConfirmationQuestion($question, $default);
 
-        return $questionHelper->ask($input, $output, $question);
+        $answer = $questionHelper->ask($input, $output, $question);
+
+        assert(is_bool($answer));
+
+        return $answer;
     }
 }
