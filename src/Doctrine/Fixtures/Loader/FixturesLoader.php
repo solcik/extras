@@ -51,14 +51,16 @@ class FixturesLoader extends Loader
     #[Override]
     protected function createFixture(string $class): FixtureInterface
     {
+        /** @var class-string $classString */
+        $classString = $class;
         try {
-            $type = $this->container->getByType($class);
+            $type = $this->container->getByType($classString);
 
             assert($type instanceof FixtureInterface);
 
             return $type;
         } catch (MissingServiceException) {
-            return parent::createFixture($class);
+            return parent::createFixture($classString);
         }
     }
 }

@@ -9,7 +9,6 @@ parameters:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
     ignoreErrors:
-        - identifier: argument.templateType
+        # ToDo
         - identifier: argument.type
         - identifier: missingType.iterableValue
-        - identifier: missingType.parameter

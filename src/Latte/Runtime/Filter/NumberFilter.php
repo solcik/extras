@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Solcik\Latte\Runtime\Filter;
 
+use Brick\Math\BigNumber;
 use Solcik\Intl\IntlFormatter;
 
 final readonly class NumberFilter
@@ -13,7 +14,7 @@ final readonly class NumberFilter
     ) {
     }
 
-    public function __invoke($number, int $scale = 0): string
+    public function __invoke(BigNumber|int|float $number, int $scale = 0): string
     {
         return $this->intlFormatter->number($number, $scale);
     }

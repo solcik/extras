@@ -40,10 +40,7 @@ final readonly class IntlFormatter
         return $str;
     }
 
-    /**
-     * @param BigNumber|int|float $value
-     */
-    public function number($value, int $scale = 0, string $grouping = ' '): string
+    public function number(BigNumber|int|float $value, int $scale = 0, string $grouping = ' '): string
     {
         if ($value instanceof BigNumber) {
             $value = $value->toFloat();
