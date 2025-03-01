@@ -2,63 +2,52 @@
 
 declare(strict_types=1);
 
-use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\CommentedOutCodeSniff;
-use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
-use SlevomatCodingStandard\Sniffs\Commenting\DisallowCommentAfterCodeSniff;
-use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInDeclarationSniff;
-use SlevomatCodingStandard\Sniffs\PHP\DisallowDirectMagicInvokeCallSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\CodingStandard\Fixer\Naming\StandardizeHereNowDocKeywordFixer;
-use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Option;
-use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
-return static function (ContainerConfigurator $c): void {
-    $c->import(SetList::SYMPLIFY);
-    $c->import(SetList::CLEAN_CODE);
-    $c->import(SetList::COMMON);
-    $c->import(SetList::PSR_12);
-    $c->import(SetList::PHPUNIT);
-    // $c->import(SetList::DOCTRINE_ANNOTATIONS);
-    // $c->import(SetList::PHP_CS_FIXER);
-    // $c->import(SetList::PHP_CS_FIXER_RISKY);
+/**
+ * https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/index.rst
+ * https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/ruleSets/index.rst
+ */
 
-    $parameters = $c->parameters();
-
-    $parameters->set(
-        Option::PATHS,
+/**
+ * https://github.com/slevomat/coding-standard
+ */
+return ECSConfig
+    ::configure()
+    ->withPaths(
         [
             __DIR__ . '/src',
             __DIR__ . '/tests',
         ]
-    );
-
-    $parameters->set(Option::INDENTATION, '    ');
-    $parameters->set(Option::PARALLEL, true);
-
-    $parameters->set(
-        Option::SKIP,
+    )
+    ->withRootFiles()
+    ->withParallel()
+    ->withSpacing(indentation: Option::INDENTATION_SPACES, lineEnding: PHP_EOL)
+    //    ->withCache(
+    //        directory: __DIR__ . '/storage/temp/cache/.ecs',
+    //        namespace: getcwd() // normalized to directory separator
+    //    )
+    //    ->withPreparedSets(psr12: true, common: true, symplify: true, cleanCode: true)
+    //    ->withPhpCsFixerSets(doctrineAnnotation: true, symfony: true)
+    ->withRules(
         [
-            CommentedOutCodeSniff::class => null,
-            DisallowCommentAfterCodeSniff::class => null,
-            DisallowDirectMagicInvokeCallSniff::class => null,
-            NotOperatorWithSuccessorSpaceFixer::class => null,
-            MethodChainingNewlineFixer::class => null,
-            StandardizeHereNowDocKeywordFixer::class => null,
-        ]
-    );
-
-    $services = $c->services();
-    $services->set(RequireTrailingCommaInDeclarationSniff::class);
-    $services->set(GeneralPhpdocAnnotationRemoveFixer::class)->call(
-        'configure',
-        [
-            [
-                'annotations' => [
-                ],
-            ],
+            //            RequireTrailingCommaInDeclarationSniff::class,
+            //            DeclareStrictTypesFixer::class,
         ]
     )
-    ;
-};
+    ->withConfiguredRule(GeneralPhpdocAnnotationRemoveFixer::class, [
+        'annotations' => [],
+    ])
+    //    ->withConfiguredRule(LineLengthFixer::class, [
+    //        'line_length' => 110,
+    //    ])
+    ->withSkip(
+        [
+            //            MethodChainingNewlineFixer::class,
+            //            NotOperatorWithSuccessorSpaceFixer::class,
+            //            YodaStyleFixer::class,
+        ]
+    )
+;
