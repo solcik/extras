@@ -101,6 +101,6 @@ final readonly class WeekPaginator implements DatePaginator
             ->getInstant()
         ;
 
-        return new Interval($start, $end);
+        return Interval::of($start, $end);
     }
 }

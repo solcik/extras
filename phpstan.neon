@@ -24,7 +24,6 @@ parameters:
         - identifier: method.notFound
         - identifier: missingType.iterableValue
         - identifier: missingType.parameter
-        - identifier: new.privateConstructor
         - identifier: offsetAccess.nonOffsetAccessible
         - identifier: offsetAssign.dimType
         - identifier: parameter.deprecatedInterface
