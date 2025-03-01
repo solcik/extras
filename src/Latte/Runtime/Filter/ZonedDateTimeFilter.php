@@ -10,6 +10,6 @@ final class ZonedDateTimeFilter
 {
     public function __invoke(ZonedDateTime $dateTime, string $format): string
     {
-        return $dateTime->toDateTimeImmutable()->format($format);
+        return $dateTime->toNativeDateTimeImmutable()->format($format);
     }
 }

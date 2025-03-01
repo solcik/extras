@@ -30,7 +30,7 @@ final readonly class Expires implements MiddlewareInterface
         $timeZone = TimeZone::parse('GMT');
         $zdt = $this->clock->createZonedDateTime()->withTimeZoneSameInstant($timeZone);
         $zdt = $zdt->plusMinutes($this->minutes);
-        $expires = $zdt->toDateTimeImmutable()->format(\DateTimeInterface::RFC7231);
+        $expires = $zdt->toNativeDateTimeImmutable()->format(\DateTimeInterface::RFC7231);
 
         return $response->withHeader(self::HEADER, $expires);
     }

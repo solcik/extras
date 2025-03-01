@@ -10,6 +10,6 @@ final class LocalDateFilter
 {
     public function __invoke(LocalDate $date, string $format): string
     {
-        return $date->toDateTimeImmutable()->format($format);
+        return $date->toNativeDateTimeImmutable()->format($format);
     }
 }

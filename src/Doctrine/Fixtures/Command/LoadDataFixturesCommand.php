@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Solcik\Doctrine\Fixtures\Command;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Solcik\Doctrine\Fixtures\Loader\FixturesLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,7 +24,7 @@ class LoadDataFixturesCommand extends Command
     protected static $defaultName = 'doctrine:fixtures:load';
 
     public function __construct(
-        private readonly Loader $loader,
+        private readonly FixturesLoader $loader,
         private readonly ManagerRegistry $managerRegistry,
     ) {
         parent::__construct();

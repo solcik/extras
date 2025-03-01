@@ -6,8 +6,6 @@ namespace Solcik\Exception\Runtime\Acl;
 
 use Solcik\Exception\Runtime\EntityNotFoundException;
 
-use function Safe\sprintf;
-
 final class UserNotFoundByEmail extends EntityNotFoundException
 {
     private readonly string $email;
