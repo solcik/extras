@@ -7,8 +7,9 @@ namespace Solcik\Test\Doctrine\DBAL\Type;
 use Brick\DateTime\LocalDateTime;
 use Brick\DateTime\TimeZone;
 use Brick\DateTime\ZonedDateTime;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Solcik\Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Solcik\Doctrine\DBAL\Type\ZonedDateTimeType;
 
 final class ZonedDateTimeTest extends TestCase
@@ -17,15 +18,15 @@ final class ZonedDateTimeTest extends TestCase
 
     public function testDatabasePlatform(): void
     {
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
 
-        self::assertInstanceOf(PostgreSQL100Platform::class, $platform);
-        self::assertSame('Y-m-d H:i:sO', $platform->getDateTimeTzFormatString());
+        self::assertInstanceOf(PostgreSQLPlatform::class, $platform);
+        self::assertSame('Y-m-d H:i:s.uO', $platform->getDateTimeTzFormatString());
     }
 
     public function testGetSQLDeclaration(): void
     {
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
         $type = new ZonedDateTimeType();
 
         $converted = $type->getSQLDeclaration([], $platform);
@@ -34,42 +35,42 @@ final class ZonedDateTimeTest extends TestCase
 
     public function testConvertToDatabaseValueNull(): void
     {
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
         $type = new ZonedDateTimeType();
 
         $converted = $type->convertToDatabaseValue(null, $platform);
         self::assertNull($converted);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideToDatabase')]
+    #[DataProvider('provideToDatabase')]
     public function testConvertToDatabaseValue(string $expected, ZonedDateTime $value): void
     {
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
         $type = new ZonedDateTimeType();
 
         $converted = $type->convertToDatabaseValue($value, $platform);
         self::assertSame($expected, $converted);
     }
 
-    public function provideToDatabase(): array
+    public static function provideToDatabase(): array
     {
         return [
             [
-                '2020-07-19 06:56:50.123456 Europe/Prague',
+                '2020-07-19 06:56:50.123456+0200',
                 ZonedDateTime::of(
                     LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789),
                     TimeZone::parse('Europe/Prague')
                 ),
             ],
             [
-                '2020-07-19 06:56:50.123456 Z',
+                '2020-07-19 06:56:50.123456+0000',
                 ZonedDateTime::of(
                     LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789),
                     TimeZone::parse('Z')
                 ),
             ],
             [
-                '2020-07-19 06:56:50.123456 +02:00',
+                '2020-07-19 06:56:50.123456+0200',
                 ZonedDateTime::of(
                     LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789),
                     TimeZone::parse('+02:00')
@@ -80,17 +81,17 @@ final class ZonedDateTimeTest extends TestCase
 
     public function testConvertToPHPValueNull(): void
     {
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
         $type = new ZonedDateTimeType();
 
         $converted = $type->convertToPHPValue(null, $platform);
         self::assertNull($converted);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideToPHP')]
+    #[DataProvider('provideToPHP')]
     public function testConvertToPHPValue(string $expected, string $value, ?string $timeZone = null): void
     {
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
         $type = new ZonedDateTimeType();
         $type::$timezone = $timeZone;
 
@@ -99,7 +100,7 @@ final class ZonedDateTimeTest extends TestCase
         self::assertSame($expected, $converted->__toString());
     }
 
-    public function provideToPHP(): array
+    public static function provideToPHP(): array
     {
         return [
             ['2020-07-19T06:56:50+02:00[Europe/Prague]', '2020-07-19 06:56:50+02', self::ZONE],
