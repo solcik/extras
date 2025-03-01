@@ -17,6 +17,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+use function assert;
+
 class LoadDataFixturesCommand extends Command
 {
     /**
@@ -141,8 +143,12 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
         string $question,
         bool $default,
     ): bool {
-        /** @var QuestionHelper $questionHelper */
-        $questionHelper = $this->getHelperSet()->get('question');
+        $helperSet = $this->getHelperSet();
+        assert($helperSet !== null);
+
+        $questionHelper = $helperSet->get('question');
+        assert($questionHelper instanceof QuestionHelper);
+
         $question = new ConfirmationQuestion($question, $default);
 
         return $questionHelper->ask($input, $output, $question);

@@ -15,6 +15,10 @@ use Nette\Forms\Validator;
 use Nette\Utils\Arrays;
 use Nette\Utils\Html;
 use Override;
+use Stringable;
+
+use function assert;
+use function is_string;
 
 /**
  * Select box control that allows single item selection.
@@ -94,9 +98,11 @@ final class SelectBox extends ChoiceControl
                 unset($items[$key]);
                 if (is_array($value)) {
                     foreach ($value as $val) {
+                        assert(is_string($val) || $val instanceof Stringable);
                         $res[$key][(string) $val] = $val;
                     }
                 } else {
+                    assert(is_string($value) || $value instanceof Stringable);
                     $res[(string) $value] = $value;
                 }
             }
@@ -122,13 +128,16 @@ final class SelectBox extends ChoiceControl
             $items[is_array($value) ? $this->translate($key) : $key] = $this->translate($value);
         }
 
+        $control = parent::getControl();
+        assert($control instanceof Html);
+
         return Helpers::createSelectBox(
             $items,
             [
                 'disabled:' => $this->disabled,
             ] + $this->optionAttributes,
             $this->value
-        )->addAttributes(parent::getControl()->attrs);
+        )->addAttributes($control->attrs);
     }
 
     public function addOptionAttributes(array $attributes): self
