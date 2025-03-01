@@ -1,0 +1,165 @@
+name: QA & Tests
+
+on:
+    push:
+    schedule:
+        -   cron: '0 8 * * 1' # At 08:00 on Monday
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+    parallel-lint:
+        name: 🔎 Parallel lint
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            fail-fast: false
+            matrix:
+                operating-system: [ 'ubuntu-24.04' ]
+                php-versions: [ '8.4' ]
+        steps:
+            -   name: ⬇️ Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: 🐘 Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-versions }}
+                    extensions: mbstring, intl
+                    coverage: none
+
+            -   name: 📥 Install dependencies
+                uses: ramsey/composer-install@v3
+                with:
+                    dependency-versions: 'locked'
+
+            -   name: 🔎 Parallel lint
+                run: php ./vendor/bin/parallel-lint --exclude ./.git --exclude ./vendor .
+
+    ecs:
+        name: ✏️️ ECS
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            fail-fast: false
+            matrix:
+                operating-system: [ 'ubuntu-24.04' ]
+                php-versions: [ '8.4' ]
+        steps:
+            -   name: ⬇️ Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: 🐘 Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-versions }}
+                    extensions: mbstring, intl
+                    coverage: none
+
+            -   name: 📥 Install dependencies
+                uses: ramsey/composer-install@v3
+                with:
+                    dependency-versions: 'locked'
+
+            -   name: ✏️️ ECS
+                run: php ./vendor/bin/ecs
+
+    phpstan:
+        name: 🟩️️ PHPStan
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            fail-fast: false
+            matrix:
+                operating-system: [ 'ubuntu-24.04' ]
+                php-versions: [ '8.4' ]
+        steps:
+            -   name: ⬇️ Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: 🐘 Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-versions }}
+                    extensions: mbstring, intl
+                    coverage: none
+
+            -   name: 📥 Install dependencies
+                uses: ramsey/composer-install@v3
+                with:
+                    dependency-versions: 'locked'
+
+            -   name: 🟩️️ PHPStan
+                run: php ./vendor/bin/phpstan --ansi
+
+    rector:
+        name: 🛠️ Rector
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            fail-fast: false
+            matrix:
+                operating-system: [ 'ubuntu-24.04' ]
+                php-versions: [ '8.4' ]
+        steps:
+            -   name: ⬇️ Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: 🐘 Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-versions }}
+                    extensions: mbstring, intl
+                    coverage: none
+
+            -   name: 📥 Install dependencies
+                uses: ramsey/composer-install@v3
+                with:
+                    dependency-versions: 'locked'
+
+            -   name: 🛠️ Rector
+                run: php ./vendor/bin/rector process --dry-run --ansi
+
+    phpunit:
+        name: 🧮 PHPUnit
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            fail-fast: false
+            matrix:
+                operating-system: [ 'ubuntu-24.04' ]
+                php-versions: [ '8.4' ]
+        # Docs: https://docs.github.com/en/actions/using-containerized-services
+        services:
+            mysql:
+                image: mariadb:11.7.2
+                env:
+                    MARIADB_DATABASE: extras-ci
+                    MARIADB_USER: extras
+                    MARIADB_PASSWORD: extras
+                    MARIADB_ROOT_PASSWORD: extras
+                ports:
+                    - 3306/tcp
+                options: --health-cmd="mariadb-admin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        steps:
+            -   name: ⬇️ Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: 🐘 Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-versions }}
+                    extensions: mbstring, intl, xml, ctype, iconv, pdo_sqlite, mysql
+                    coverage: xdebug
+                    # ini-values: post_max_size=256M, max_execution_time=180
+
+            -   name: 📥 Install dependencies
+                uses: ramsey/composer-install@v3
+                with:
+                    dependency-versions: 'locked'
+
+            -   name: 💾 Prepare database + run migration
+                env:
+                    DATABASE_URL: mysql://extras:extras@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/extras-ci
+                # run: php ./bin/console doctrine:migrations:migrate --no-interaction
+                run: echo "Database is ready"
+
+            -   name: 🧮 PHPUnit
+                run: php ./vendor/bin/phpunit
