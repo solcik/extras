@@ -14,6 +14,4 @@ parameters:
         - identifier: assign.propertyType
         - identifier: missingType.iterableValue
         - identifier: missingType.parameter
-        - identifier: offsetAccess.nonOffsetAccessible
-        - identifier: offsetAssign.dimType
         - identifier: return.type

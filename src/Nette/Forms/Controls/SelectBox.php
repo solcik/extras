@@ -97,10 +97,12 @@ final class SelectBox extends ChoiceControl
             foreach ($items as $key => $value) {
                 unset($items[$key]);
                 if (is_array($value)) {
+                    $resWithKey = [];
                     foreach ($value as $val) {
                         assert(is_string($val) || $val instanceof Stringable);
-                        $res[$key][(string) $val] = $val;
+                        $resWithKey[(string) $val] = $val;
                     }
+                    $res[$key] = $resWithKey;
                 } else {
                     assert(is_string($value) || $value instanceof Stringable);
                     $res[(string) $value] = $value;

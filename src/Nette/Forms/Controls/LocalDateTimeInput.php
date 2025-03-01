@@ -98,7 +98,7 @@ class LocalDateTimeInput extends TextInput
     public function getControl(): Html
     {
         $control = parent::getControl();
-        $control->class[] = implode(' ', static::$additionalHtmlClasses);
+        $control->class .= ' ' . implode(' ', static::$additionalHtmlClasses);
 
         return $control;
     }

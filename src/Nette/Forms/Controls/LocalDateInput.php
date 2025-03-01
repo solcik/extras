@@ -12,6 +12,8 @@ use Nette\Forms\Controls\TextInput;
 use Nette\Utils\Html;
 use Override;
 
+use function implode;
+
 class LocalDateInput extends TextInput
 {
     /**
@@ -98,7 +100,7 @@ class LocalDateInput extends TextInput
     public function getControl(): Html
     {
         $control = parent::getControl();
-        $control->class[] = implode(' ', static::$additionalHtmlClasses);
+        $control->class .= ' ' . implode(' ', static::$additionalHtmlClasses);
 
         return $control;
     }
