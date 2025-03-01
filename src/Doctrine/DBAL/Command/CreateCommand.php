@@ -4,28 +4,15 @@ declare(strict_types=1);
 
 namespace Solcik\Doctrine\DBAL\Command;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\Persistence\ManagerRegistry;
-use Solcik\Exception\Logic\DBALConnectionArgumentException;
-use Symfony\Component\Console\Command\Command;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class CreateCommand extends Command
+final class CreateCommand extends DoctrineCommand
 {
-    /**
-     * @var string string
-     */
-    protected static $defaultName = 'dbal:database:create';
-
-    public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
-    ) {
-        parent::__construct();
-    }
+    protected static string $defaultName = 'dbal:database:create';
 
     protected function configure(): void
     {
@@ -57,72 +44,70 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var string|null $connectionName */
         $connectionName = $input->getOption('connection');
-        $connectionName = (string) $connectionName;
-        $dontScreamIfExists = (bool) $input->getOption('if-not-exists');
-
-        if ($connectionName === '') {
-            $connectionName = $this->managerRegistry->getDefaultConnectionName();
+        if ($connectionName === null) {
+            $connectionName = $this->getDoctrine()->getDefaultConnectionName();
         }
-        /** @var Connection $connection */
-        $connection = $this->managerRegistry->getConnection($connectionName);
 
-        $driverOptions = [];
+        $connection = $this->getDoctrineConnection($connectionName);
+
+        $ifNotExists = (bool) $input->getOption('if-not-exists');
+
         $params = $connection->getParams();
 
-        if (isset($params['driverOptions'])) {
-            $driverOptions = $params['driverOptions'];
-        }
-
-        // Since doctrine/dbal 2.11 master has been replaced by primary
         if (isset($params['primary'])) {
             $params = $params['primary'];
-            $params['driverOptions'] = $driverOptions;
         }
 
-        if (isset($params['master'])) {
-            $params = $params['master'];
-            $params['driverOptions'] = $driverOptions;
-        }
-
-        $name = $params['path'] ?? $params['dbname'] ?? null;
-
-        if ($name === null) {
-            throw new DBALConnectionArgumentException(
+        $hasPath = isset($params['path']);
+        $name = $hasPath ? $params['path'] : ($params['dbname'] ?? false);
+        if (!$name) {
+            throw new \InvalidArgumentException(
                 "Connection does not contain a 'path' or 'dbname' parameter and cannot be created."
             );
         }
+
+        // Need to get rid of _every_ occurrence of dbname from connection configuration as we have already extracted all relevant info from url
+        /* Need to be compatible with DBAL < 4, which still has `$params['url']` */
+        /* @phpstan-ignore unset.offset */
         unset($params['dbname'], $params['path'], $params['url']);
 
-        // We drop previous connection and create a new one without path/dbname.
-        $connection = DriverManager::getConnection($params);
-        $connection->connect();
-        $tmpSchemaManager = $connection->getSchemaManager();
-        $dbExists = in_array($name, $tmpSchemaManager->listDatabases(), true);
+        if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            /* It's still available in DBAL 3.x that we need to support */
+            /* @phpstan-ignore nullCoalesce.offset */
+            $params['dbname'] = $params['default_dbname'] ?? 'postgres';
+        }
+
+        $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
+        $schemaManager = $tmpConnection->createSchemaManager();
+        $shouldNotCreateDatabase = $ifNotExists && in_array($name, $schemaManager->listDatabases(), true);
 
         // Only quote if we don't have a path
-        if (!isset($params['path'])) {
-            $databasePlatform = $connection->getDatabasePlatform();
-            $name = $databasePlatform->quoteSingleIdentifier($name);
+        if (!$hasPath) {
+            $name = $tmpConnection->getDatabasePlatform()->quoteSingleIdentifier($name);
         }
 
-        if ($dbExists && $dontScreamIfExists) {
-            $output->writeln(
-                sprintf(
-                    '<info>Database <comment>%s</comment> for connection named <comment>%s</comment> already exists. Skipped.</info>',
-                    $name,
-                    $connectionName
-                )
-            );
-            $connection->close();
-
-            return 0;
-        }
-
+        $error = false;
         try {
-            $tmpSchemaManager->createDatabase($name);
-        } catch (DBALException $e) {
+            if ($shouldNotCreateDatabase) {
+                $output->writeln(
+                    sprintf(
+                        '<info>Database <comment>%s</comment> for connection named <comment>%s</comment> already exists. Skipped.</info>',
+                        $name,
+                        $connectionName
+                    )
+                );
+            } else {
+                $schemaManager->createDatabase($name);
+                $output->writeln(
+                    sprintf(
+                        '<info>Created database <comment>%s</comment> for connection named <comment>%s</comment></info>',
+                        $name,
+                        $connectionName
+                    )
+                );
+            }
+        } catch (\Throwable $e) {
             $output->writeln(
                 sprintf(
                     '<error>Could not create database <comment>%s</comment> for connection named <comment>%s</comment></error>',
@@ -131,19 +116,11 @@ EOT
                 )
             );
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
-
-            return 1;
+            $error = true;
         }
 
-        $output->writeln(
-            sprintf(
-                '<info>Created database <comment>%s</comment> for connection named <comment>%s</comment></info>',
-                $name,
-                $connectionName
-            )
-        );
-        $connection->close();
+        $tmpConnection->close();
 
-        return 0;
+        return $error ? 1 : 0;
     }
 }

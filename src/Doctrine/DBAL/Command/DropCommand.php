@@ -5,42 +5,22 @@ declare(strict_types=1);
 namespace Solcik\Doctrine\DBAL\Command;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\Persistence\ManagerRegistry;
-use Solcik\Exception\Logic\DBALConnectionArgumentException;
-use Symfony\Component\Console\Command\Command;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Schema\SQLiteSchemaManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class DropCommand extends Command
+final class DropCommand extends DoctrineCommand
 {
-    /**
-     * @var int
-     */
     public const int RETURN_CODE_NOT_DROP = 1;
 
-    /**
-     * @var int
-     */
     public const int RETURN_CODE_NO_FORCE = 2;
 
-    /**
-     * @var int
-     */
     public const int RETURN_CODE_DOES_NOT_EXIST = 3;
 
-    /**
-     * @var string string
-     */
-    protected static $defaultName = 'dbal:database:drop';
-
-    public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
-    ) {
-        parent::__construct();
-    }
+    protected static string $defaultName = 'dbal:database:drop';
 
     protected function configure(): void
     {
@@ -75,46 +55,39 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var string|null $connectionName */
         $connectionName = $input->getOption('connection');
-        $doNotScreamIfExists = (bool) $input->getOption('if-exists');
-        $force = (bool) $input->getOption('force');
-
-        if ($connectionName === '' || $connectionName === null) {
-            $connectionName = $this->managerRegistry->getDefaultConnectionName();
+        if ($connectionName === null) {
+            $connectionName = $this->getDoctrine()->getDefaultConnectionName();
         }
 
-        /** @var Connection $connection */
-        $connection = $this->managerRegistry->getConnection($connectionName);
+        $connection = $this->getDoctrineConnection($connectionName);
 
-        $driverOptions = [];
+        $ifExists = (bool) $input->getOption('if-exists');
+
         $params = $connection->getParams();
 
-        if (isset($params['driverOptions'])) {
-            $driverOptions = $params['driverOptions'];
-        }
-
-        // Since doctrine/dbal 2.11 master has been replaced by primary
         if (isset($params['primary'])) {
             $params = $params['primary'];
-            $params['driverOptions'] = $driverOptions;
         }
 
-        if (isset($params['master'])) {
-            $params = $params['master'];
-            $params['driverOptions'] = $driverOptions;
-        }
-
-        $name = $params['path'] ?? $params['dbname'] ?? null;
-
-        if ($name === null) {
-            throw new DBALConnectionArgumentException(
+        $name = $params['path'] ?? ($params['dbname'] ?? false);
+        if (!$name) {
+            throw new \InvalidArgumentException(
                 "Connection does not contain a 'path' or 'dbname' parameter and cannot be dropped."
             );
         }
+
+        /* Need to be compatible with DBAL < 4, which still has `$params['url']` */
+        /* @phpstan-ignore unset.offset */
         unset($params['dbname'], $params['url']);
 
-        if (!$force) {
+        if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            /* It's still available in DBAL 3.x that we need to support */
+            /* @phpstan-ignore nullCoalesce.offset */
+            $params['dbname'] = $params['default_dbname'] ?? 'postgres';
+        }
+
+        if (!$input->getOption('force')) {
             $output->writeln(
                 '<error>ATTENTION:</error> This operation should not be executed in a production environment.'
             );
@@ -135,35 +108,46 @@ EOT
         // Reopen connection without database name set
         // as some vendors do not allow dropping the database connected to.
         $connection->close();
-        $connection = DriverManager::getConnection($params);
-        $schemaManager = $connection->getSchemaManager();
-        $dbExists = in_array($name, $schemaManager->listDatabases(), true);
+        $connection = DriverManager::getConnection($params, $connection->getConfiguration());
+        $schemaManager = $connection->createSchemaManager();
+        $shouldDropDatabase = !$ifExists || in_array($name, $schemaManager->listDatabases(), true);
 
         // Only quote if we don't have a path
         if (!isset($params['path'])) {
-            $databasePlatform = $connection->getDatabasePlatform();
-            $name = $databasePlatform->quoteSingleIdentifier($name);
-        }
-
-        if (!$dbExists) {
-            if ($doNotScreamIfExists) {
-                return 0;
-            }
-
-            $output->writeln(
-                sprintf(
-                    '<info>Database <comment>%s</comment> for connection named <comment>%s</comment> doesn\'t exist. Skipped.</info>',
-                    $name,
-                    $connectionName
-                )
-            );
-
-            return self::RETURN_CODE_DOES_NOT_EXIST;
+            $name = $connection->getDatabasePlatform()->quoteSingleIdentifier($name);
         }
 
         try {
-            $schemaManager->dropDatabase($name);
-        } catch (DBALException $e) {
+            if ($shouldDropDatabase) {
+                if ($schemaManager instanceof SQLiteSchemaManager) {
+                    // dropDatabase() is deprecated for Sqlite
+                    $connection->close();
+                    if (file_exists($name)) {
+                        unlink($name);
+                    }
+                } else {
+                    $schemaManager->dropDatabase($name);
+                }
+
+                $output->writeln(
+                    sprintf(
+                        '<info>Dropped database <comment>%s</comment> for connection named <comment>%s</comment></info>',
+                        $name,
+                        $connectionName
+                    )
+                );
+            } else {
+                $output->writeln(
+                    sprintf(
+                        '<info>Database <comment>%s</comment> for connection named <comment>%s</comment> doesn\'t exist. Skipped.</info>',
+                        $name,
+                        $connectionName
+                    )
+                );
+            }
+
+            return 0;
+        } catch (\Throwable $e) {
             $output->writeln(
                 sprintf(
                     '<error>Could not drop database <comment>%s</comment> for connection named <comment>%s</comment></error>',
@@ -175,15 +159,5 @@ EOT
 
             return self::RETURN_CODE_NOT_DROP;
         }
-
-        $output->writeln(
-            sprintf(
-                '<info>Dropped database <comment>%s</comment> for connection named <comment>%s</comment></info>',
-                $name,
-                $connectionName
-            )
-        );
-
-        return 0;
     }
 }
