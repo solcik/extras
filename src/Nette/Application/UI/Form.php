@@ -10,7 +10,7 @@ use Nette\Forms\Controls\TextInput;
 final class Form extends NetteForm
 {
     #[\Override]
-    public function addFloat(string $name, ?string $label = null): TextInput
+    public function addFloat(string $name, string|\Stringable|null $label = null): TextInput
     {
         $input = $this->addText($name, $label);
         $input->addCondition(self::FILLED)

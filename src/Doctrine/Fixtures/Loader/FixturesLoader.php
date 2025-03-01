@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Solcik\Doctrine\Fixtures\Loader;
 
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
@@ -46,11 +47,8 @@ class FixturesLoader extends Loader
         return $this->paths;
     }
 
-    /**
-     * @param string $class
-     */
     #[\Override]
-    protected function createFixture($class)
+    protected function createFixture(string $class): FixtureInterface
     {
         try {
             return $this->container->getByType($class);

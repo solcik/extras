@@ -13,7 +13,7 @@ class ZonedDateTimeInput extends LocalDateTimeInput
     public static string $timezone = 'Europe/Prague';
 
     #[\Override]
-    public function getValue()
+    public function getValue(): mixed
     {
         $val = parent::getValue();
         if (!$this->isValidated) {

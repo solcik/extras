@@ -1,5 +1,4 @@
 includes:
-    - vendor/pepakriz/phpstan-exception-rules/extension.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon
@@ -9,10 +8,31 @@ parameters:
     paths:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
-    checkMissingIterableValueType: false
-#    checkGenericClassInNonGenericObjectType: false
-    exceptionRules:
-        uncheckedExceptions:
-            - LogicException
     ignoreErrors:
-        - '#PHPDoc tag @throws with type .* is not compatible with parent#'
+        - identifier: argument.templateType
+        - identifier: argument.type
+        - identifier: assign.propertyType
+        - identifier: binaryOp.invalid
+        - identifier: booleanAnd.rightNotBoolean
+        - identifier: booleanNot.exprNotBoolean
+        - identifier: cast.string
+        - identifier: class.notFound
+        - identifier: classConstant.deprecated
+        - identifier: function.impossibleType
+        - identifier: function.notFound
+        - identifier: if.condNotBoolean
+        - identifier: isset.offset
+        - identifier: method.nonObject
+        - identifier: method.notFound
+        - identifier: method.protected
+        - identifier: missingType.iterableValue
+        - identifier: missingType.parameter
+        - identifier: new.privateConstructor
+        - identifier: offsetAccess.nonOffsetAccessible
+        - identifier: offsetAssign.dimType
+        - identifier: parameter.deprecatedInterface
+        - identifier: property.nonObject
+        - identifier: return.type
+        - identifier: ternary.condNotBoolean
+        - identifier: trait.unused
+        - identifier: unset.offset

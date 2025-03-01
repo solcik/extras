@@ -89,7 +89,7 @@ jobs:
                     dependency-versions: 'locked'
 
             -   name: 🟩️️ PHPStan
-                run: php ./vendor/bin/phpstan --ansi
+                run: php ./vendor/bin/phpstan --ansi --memory-limit=256M
 
     rector:
         name: 🛠️ Rector

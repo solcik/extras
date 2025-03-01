@@ -66,7 +66,7 @@ class LocalDateInput extends TextInput
     }
 
     #[\Override]
-    public function getValue()
+    public function getValue(): mixed
     {
         $val = parent::getValue();
         if (!$this->isValidated) {
