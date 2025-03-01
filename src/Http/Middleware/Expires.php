@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Solcik\Http\Middleware;
 
 use Brick\DateTime\TimeZone;
+use DateTimeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -30,7 +31,7 @@ final readonly class Expires implements MiddlewareInterface
         $timeZone = TimeZone::parse('GMT');
         $zdt = $this->clock->createZonedDateTime()->withTimeZoneSameInstant($timeZone);
         $zdt = $zdt->plusMinutes($this->minutes);
-        $expires = $zdt->toNativeDateTimeImmutable()->format(\DateTimeInterface::RFC7231);
+        $expires = $zdt->toNativeDateTimeImmutable()->format(DateTimeInterface::RFC7231);
 
         return $response->withHeader(self::HEADER, $expires);
     }

@@ -8,6 +8,8 @@ use Jean85\PrettyVersions;
 use Sentry\ClientInterface;
 use Sentry\SentrySdk;
 
+use function Sentry\init;
+
 final class ClientFactory
 {
     /**
@@ -21,7 +23,7 @@ final class ClientFactory
             'release' => $name . '@' . $version->getShortVersion(),
         ]);
 
-        \Sentry\init($options);
+        init($options);
 
         $hub = SentrySdk::getCurrentHub();
 

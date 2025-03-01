@@ -26,7 +26,7 @@ final class CssControl extends BaseControl
      *
      * @return $this
      */
-    public function setMedia(string $media)
+    public function setMedia(string $media): self
     {
         $this->media = $media;
 
@@ -43,7 +43,7 @@ final class CssControl extends BaseControl
      *
      * @return $this
      */
-    public function setType(string $type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -60,7 +60,7 @@ final class CssControl extends BaseControl
      *
      * @return $this
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -80,7 +80,7 @@ final class CssControl extends BaseControl
      *
      * @return $this
      */
-    public function setAlternate(bool $alternate)
+    public function setAlternate(bool $alternate): self
     {
         $this->alternate = $alternate;
 

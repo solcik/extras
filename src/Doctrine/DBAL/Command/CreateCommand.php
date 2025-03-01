@@ -6,9 +6,11 @@ namespace Solcik\Doctrine\DBAL\Command;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 final class CreateCommand extends DoctrineCommand
 {
@@ -62,7 +64,7 @@ EOT
         $hasPath = isset($params['path']);
         $name = $hasPath ? $params['path'] : ($params['dbname'] ?? false);
         if ($name === false) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 "Connection does not contain a 'path' or 'dbname' parameter and cannot be created."
             );
         }
@@ -107,7 +109,7 @@ EOT
                     )
                 );
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $output->writeln(
                 sprintf(
                     '<error>Could not create database <comment>%s</comment> for connection named <comment>%s</comment></error>',

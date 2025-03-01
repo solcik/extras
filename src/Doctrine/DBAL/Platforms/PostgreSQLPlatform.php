@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Solcik\Doctrine\DBAL\Platforms;
 
+use Override;
+
 class PostgreSQLPlatform extends \Doctrine\DBAL\Platforms\PostgreSQLPlatform
 {
-    #[\Override]
+    #[Override]
     public function getDateTimeFormatString(): string
     {
         return str_replace('s', 's.u', parent::getDateTimeFormatString());
     }
 
-    #[\Override]
+    #[Override]
     public function getDateTimeTzFormatString(): string
     {
         return str_replace('s', 's.u', parent::getDateTimeTzFormatString());
     }
 
-    #[\Override]
+    #[Override]
     public function getTimeFormatString(): string
     {
         return str_replace('s', 's.u', parent::getTimeFormatString());

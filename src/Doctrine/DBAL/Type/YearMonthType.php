@@ -11,12 +11,13 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\InvalidFormat;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\StringType;
+use Override;
 
 final class YearMonthType extends StringType
 {
     public const string NAME = 'brick_yearmonth';
 
-    #[\Override]
+    #[Override]
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         $column['length'] = 7;
@@ -24,7 +25,7 @@ final class YearMonthType extends StringType
         return $platform->getStringTypeDeclarationSQL($column);
     }
 
-    #[\Override]
+    #[Override]
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -38,7 +39,7 @@ final class YearMonthType extends StringType
         throw InvalidType::new($value, self::NAME, [YearMonth::class]);
     }
 
-    #[\Override]
+    #[Override]
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?YearMonth
     {
         if ($value === null) {

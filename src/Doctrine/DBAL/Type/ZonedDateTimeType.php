@@ -6,12 +6,15 @@ namespace Solcik\Doctrine\DBAL\Type;
 
 use Brick\DateTime\TimeZone;
 use Brick\DateTime\ZonedDateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\InvalidFormat;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
+use Override;
 use Safe\Exceptions\DatetimeException;
 
+use function Safe\date_create_immutable;
 use function Safe\preg_replace;
 
 final class ZonedDateTimeType extends Type
@@ -42,7 +45,7 @@ final class ZonedDateTimeType extends Type
         return trim("{$before}({$precision}) {$after}");
     }
 
-    #[\Override]
+    #[Override]
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -56,7 +59,7 @@ final class ZonedDateTimeType extends Type
         throw InvalidType::new($value, self::NAME, [ZonedDateTime::class]);
     }
 
-    #[\Override]
+    #[Override]
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?ZonedDateTime
     {
         if ($value instanceof ZonedDateTime) {
@@ -67,11 +70,11 @@ final class ZonedDateTimeType extends Type
             return null;
         }
 
-        $dateTime = \DateTimeImmutable::createFromFormat($platform->getDateTimeTzFormatString(), $value);
+        $dateTime = DateTimeImmutable::createFromFormat($platform->getDateTimeTzFormatString(), $value);
 
         if ($dateTime === false) {
             try {
-                $dateTime = \Safe\date_create_immutable($value);
+                $dateTime = date_create_immutable($value);
             } catch (DatetimeException) {
                 throw InvalidFormat::new($value, self::NAME, null);
             }

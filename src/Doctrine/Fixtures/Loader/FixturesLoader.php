@@ -8,6 +8,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
+use Override;
 
 class FixturesLoader extends Loader
 {
@@ -47,7 +48,7 @@ class FixturesLoader extends Loader
         return $this->paths;
     }
 
-    #[\Override]
+    #[Override]
     protected function createFixture(string $class): FixtureInterface
     {
         try {

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Solcik\Doctrine\DBAL\Command;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\SQLiteSchemaManager;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use function is_string;
+use Throwable;
 
 final class DropCommand extends DoctrineCommand
 {
@@ -74,7 +73,7 @@ EOT
 
         $name = $params['path'] ?? ($params['dbname'] ?? false);
         if ($name === false) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 "Connection does not contain a 'path' or 'dbname' parameter and cannot be dropped."
             );
         }
@@ -151,7 +150,7 @@ EOT
             }
 
             return 0;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $output->writeln(
                 sprintf(
                     '<error>Could not drop database <comment>%s</comment> for connection named <comment>%s</comment></error>',

@@ -7,11 +7,13 @@ namespace Solcik\WebpackLoader\DI;
 use Nette\DI\CompilerExtension;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
+use Override;
 use Solcik\WebpackLoader\ControlFactory;
+use stdClass;
 
 final class WebpackLoaderExtension extends CompilerExtension
 {
-    #[\Override]
+    #[Override]
     public function getConfigSchema(): Schema
     {
         $builder = $this->getContainerBuilder();
@@ -31,7 +33,7 @@ final class WebpackLoaderExtension extends CompilerExtension
     public function loadConfiguration(): void
     {
         $builder = $this->getContainerBuilder();
-        /** @var \stdClass $config */
+        /** @var stdClass $config */
         $config = $this->getConfig();
 
         $builder

@@ -10,6 +10,7 @@ use Brick\DateTime\Parser\DateTimeParser;
 use Brick\DateTime\Parser\IsoParsers;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\Html;
+use Override;
 
 class LocalDateInput extends TextInput
 {
@@ -49,23 +50,20 @@ class LocalDateInput extends TextInput
         $this->setHtmlType('date');
     }
 
-    /**
-     * @return static
-     */
-    public function setInvalidFormatMessage(string $invalidFormatMessage)
+    public function setInvalidFormatMessage(string $invalidFormatMessage): static
     {
         $this->invalidFormatMessage = $invalidFormatMessage;
 
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function cleanErrors(): void
     {
         $this->isValidated = false;
     }
 
-    #[\Override]
+    #[Override]
     public function getValue(): mixed
     {
         $val = parent::getValue();
@@ -80,7 +78,7 @@ class LocalDateInput extends TextInput
         return LocalDate::parse($val, $this->parser);
     }
 
-    #[\Override]
+    #[Override]
     public function setValue($value)
     {
         if ($value === null) {
@@ -96,7 +94,7 @@ class LocalDateInput extends TextInput
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function getControl(): Html
     {
         $control = parent::getControl();
@@ -105,7 +103,7 @@ class LocalDateInput extends TextInput
         return $control;
     }
 
-    #[\Override]
+    #[Override]
     public function validate(): void
     {
         parent::validate();

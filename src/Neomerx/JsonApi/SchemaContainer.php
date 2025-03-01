@@ -7,6 +7,7 @@ namespace Solcik\Neomerx\JsonApi;
 use Doctrine\Common\Util\ClassUtils;
 use Neomerx\JsonApi\Contracts\Schema\SchemaInterface;
 use Neomerx\JsonApi\Schema\SchemaContainer as BaseSchemaContainer;
+use Override;
 
 final class SchemaContainer extends BaseSchemaContainer
 {
@@ -20,7 +21,7 @@ final class SchemaContainer extends BaseSchemaContainer
      *
      * @param object $resource
      */
-    #[\Override]
+    #[Override]
     protected function getResourceType($resource): string
     {
         return ClassUtils::getRealClass($resource::class);

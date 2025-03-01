@@ -7,12 +7,13 @@ namespace Solcik\Nette\Forms\Controls;
 use Brick\DateTime\LocalDateTime;
 use Brick\DateTime\TimeZone;
 use Brick\DateTime\ZonedDateTime;
+use Override;
 
 class ZonedDateTimeInput extends LocalDateTimeInput
 {
     public static string $timezone = 'Europe/Prague';
 
-    #[\Override]
+    #[Override]
     public function getValue(): mixed
     {
         $val = parent::getValue();
@@ -29,8 +30,8 @@ class ZonedDateTimeInput extends LocalDateTimeInput
         return $val->atTimeZone(TimeZone::parse(self::$timezone));
     }
 
-    #[\Override]
-    public function setValue($value)
+    #[Override]
+    public function setValue($value): static
     {
         if ($value === null) {
             parent::setValue(null);

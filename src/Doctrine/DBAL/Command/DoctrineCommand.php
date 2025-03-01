@@ -7,6 +7,7 @@ namespace Solcik\Doctrine\DBAL\Command;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 
 /**
@@ -28,7 +29,7 @@ abstract class DoctrineCommand extends Command
         $manager = $this->getDoctrine()->getManager($name);
 
         if ($shardId !== null) {
-            throw new \InvalidArgumentException('Shards are not supported anymore using doctrine/dbal >= 3');
+            throw new InvalidArgumentException('Shards are not supported anymore using doctrine/dbal >= 3');
         }
 
         \assert($manager instanceof EntityManagerInterface);

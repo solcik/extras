@@ -14,6 +14,7 @@ use Nette\Forms\Helpers;
 use Nette\Forms\Validator;
 use Nette\Utils\Arrays;
 use Nette\Utils\Html;
+use Override;
 
 /**
  * Select box control that allows single item selection.
@@ -72,7 +73,7 @@ final class SelectBox extends ChoiceControl
      *
      * @return static
      */
-    public function setPrompt($prompt)
+    public function setPrompt($prompt): self
     {
         $this->prompt = $prompt;
 
@@ -84,7 +85,7 @@ final class SelectBox extends ChoiceControl
      *
      * @return static
      */
-    #[\Override]
+    #[Override]
     public function setItems(array $items, bool $useKeys = true)
     {
         if (!$useKeys) {
@@ -109,7 +110,7 @@ final class SelectBox extends ChoiceControl
     /**
      * Generates control's HTML element.
      */
-    #[\Override]
+    #[Override]
     public function getControl(): Html
     {
         $translator = $this->getForm()->getTranslator();

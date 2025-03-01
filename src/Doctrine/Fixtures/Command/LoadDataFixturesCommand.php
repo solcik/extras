@@ -8,6 +8,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use Solcik\Doctrine\Fixtures\Loader\FixturesLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -15,11 +16,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-
-use function assert;
-use function is_array;
-use function is_string;
-use function PHPUnit\Framework\isArray;
 
 class LoadDataFixturesCommand extends Command
 {
@@ -105,8 +101,8 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
 
         $dirOrFile = $input->getOption('fixtures');
 
-        if (is_string($dirOrFile) || is_array($dirOrFile)) {
-            $paths = is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
+        if (\is_string($dirOrFile) || \is_array($dirOrFile)) {
+            $paths = \is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
             $this->loader->loadPaths($paths);
         } else {
             $this->loader->load();
@@ -115,7 +111,7 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
 
         $fixtures = $this->loader->getFixtures();
         if ($fixtures === []) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Could not find any fixtures to load in: %s',
                 "\n\n- " . implode("\n- ", $paths)
             ));

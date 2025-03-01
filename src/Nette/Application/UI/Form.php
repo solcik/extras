@@ -6,11 +6,13 @@ namespace Solcik\Nette\Application\UI;
 
 use Nette\Application\UI\Form as NetteForm;
 use Nette\Forms\Controls\TextInput;
+use Override;
+use Stringable;
 
 final class Form extends NetteForm
 {
-    #[\Override]
-    public function addFloat(string $name, string|\Stringable|null $label = null): TextInput
+    #[Override]
+    public function addFloat(string $name, string|Stringable|null $label = null): TextInput
     {
         $input = $this->addText($name, $label);
         $input->addCondition(self::Filled)

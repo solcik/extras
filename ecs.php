@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
+use PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
@@ -14,11 +15,10 @@ use Symplify\EasyCodingStandard\ValueObject\Option;
 /*
  * https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/index.rst
  * https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/ruleSets/index.rst
- */
-
-/*
+ *
  * https://github.com/slevomat/coding-standard
  */
+
 return ECSConfig::configure()
     ->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
     ->withRootFiles()
@@ -42,6 +42,7 @@ return ECSConfig::configure()
             MethodChainingNewlineFixer::class,
             NotOperatorWithSuccessorSpaceFixer::class,
             YodaStyleFixer::class,
+            GlobalNamespaceImportFixer::class,
         ]
     )
 ;

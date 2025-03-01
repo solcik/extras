@@ -8,15 +8,17 @@ use Nette\DI\CompilerExtension;
 use Nette\DI\Extensions\InjectExtension;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
+use Override;
 use Solcik\Doctrine\Fixtures\Command\LoadDataFixturesCommand;
 use Solcik\Doctrine\Fixtures\Loader\FixturesLoader;
+use stdClass;
 
 /**
- * @property \stdClass $config
+ * @property stdClass $config
  */
 class FixturesExtension extends CompilerExtension
 {
-    #[\Override]
+    #[Override]
     public function getConfigSchema(): Schema
     {
         return Expect::structure([

@@ -8,13 +8,15 @@ use Neomerx\JsonApi\Contracts\Schema\SchemaInterface;
 use Nette\DI\CompilerExtension;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
+use Override;
 use Solcik\Neomerx\JsonApi\Encoder;
 use Solcik\Neomerx\JsonApi\Factory;
 use Solcik\Neomerx\JsonApi\SchemaContainer;
+use stdClass;
 
 final class JsonApiExtension extends CompilerExtension
 {
-    #[\Override]
+    #[Override]
     public function getConfigSchema(): Schema
     {
         return Expect::structure([
@@ -40,7 +42,7 @@ final class JsonApiExtension extends CompilerExtension
             $container->addSetup('registerProvider', [$def]);
         }
 
-        /** @var \stdClass $config */
+        /** @var stdClass $config */
         $config = $this->getConfig();
 
         $builder
