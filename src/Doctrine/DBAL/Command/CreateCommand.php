@@ -21,13 +21,10 @@ final class CreateCommand extends Command
      */
     protected static $defaultName = 'dbal:database:create';
 
-    private ManagerRegistry $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $managerRegistry,
+    ) {
         parent::__construct();
-
-        $this->managerRegistry = $managerRegistry;
     }
 
     protected function configure(): void
@@ -35,7 +32,12 @@ final class CreateCommand extends Command
         $this->setName(self::$defaultName);
         $this->setDescription('Creates the configured database');
 
-        $this->addOption('connection', 'c', InputOption::VALUE_OPTIONAL, 'The connection to use for this command');
+        $this->addOption(
+            'connection',
+            'c',
+            InputOption::VALUE_OPTIONAL,
+            'The connection to use for this command'
+        );
         $this->addOption(
             'if-not-exists',
             null,

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the Nette Framework (https://nette.org) Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ * This file is part of the Nette Framework (https://nette.org) Copyright (c) 2004 David Grudl (https://davidgrudl.com).
  */
 
 declare(strict_types=1);
@@ -23,7 +23,7 @@ final class SelectBox extends ChoiceControl
     /**
      * @var string
      */
-    public const VALID = ':selectBoxValid';
+    public const string VALID = ':selectBoxValid';
 
     /**
      * @var array of option / optgroup
@@ -46,11 +46,9 @@ final class SelectBox extends ChoiceControl
 
         $this->setOption('type', 'select');
         $this->addCondition(
-            function () {
-                return $this->prompt === false
-                    && $this->options
-                    && $this->control->size < 2;
-            }
+            fn (): bool => $this->prompt === false
+                && $this->options
+                && $this->control->size < 2
         )->addRule(Form::FILLED, Validator::$messages[self::VALID]);
 
         $this->setHtmlAttribute('size', null);
@@ -86,6 +84,7 @@ final class SelectBox extends ChoiceControl
      *
      * @return static
      */
+    #[\Override]
     public function setItems(array $items, bool $useKeys = true)
     {
         if (!$useKeys) {
@@ -110,6 +109,7 @@ final class SelectBox extends ChoiceControl
     /**
      * Generates control's HTML element.
      */
+    #[\Override]
     public function getControl(): Html
     {
         $translator = $this->getForm()->getTranslator();

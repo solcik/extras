@@ -11,16 +11,12 @@ use Brick\DateTime\LocalTime;
 use Brick\DateTime\YearMonth;
 use Solcik\Brick\DateTime\Clock;
 
-final class MonthPaginator implements DatePaginator
+final readonly class MonthPaginator implements DatePaginator
 {
-    private Clock $clockProvider;
-
-    private YearMonth $yearMonth;
-
-    public function __construct(Clock $clockProvider, YearMonth $yearMonth)
-    {
-        $this->clockProvider = $clockProvider;
-        $this->yearMonth = $yearMonth;
+    public function __construct(
+        private Clock $clockProvider,
+        private YearMonth $yearMonth,
+    ) {
     }
 
     public static function now(Clock $clockProvider): self
@@ -54,7 +50,7 @@ final class MonthPaginator implements DatePaginator
     public function getPrevious(int $count = 3): array
     {
         $months = [];
-        for ($i = $count; $i >= 1; $i--) {
+        for ($i = $count; $i >= 1; --$i) {
             $months[] = $this->yearMonth->minusMonths($i);
         }
 
@@ -69,7 +65,7 @@ final class MonthPaginator implements DatePaginator
         $maxFuture = $this->clockProvider->createLocalDate();
 
         $months = [];
-        for ($i = 1; $i <= $count; $i++) {
+        for ($i = 1; $i <= $count; ++$i) {
             $nextMonth = $this->yearMonth->plusMonths($i);
             if ($nextMonth->getFirstDay()->isAfter($maxFuture)) {
                 break;

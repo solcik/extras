@@ -11,16 +11,12 @@ use Brick\DateTime\LocalTime;
 use Brick\DateTime\YearWeek;
 use Solcik\Brick\DateTime\Clock;
 
-final class WeekPaginator implements DatePaginator
+final readonly class WeekPaginator implements DatePaginator
 {
-    private Clock $clockProvider;
-
-    private YearWeek $week;
-
-    public function __construct(Clock $clockProvider, YearWeek $week)
-    {
-        $this->clockProvider = $clockProvider;
-        $this->week = $week;
+    public function __construct(
+        private Clock $clockProvider,
+        private YearWeek $week,
+    ) {
     }
 
     public static function now(Clock $clockProvider): self
@@ -54,7 +50,7 @@ final class WeekPaginator implements DatePaginator
     public function getPrevious(int $count = 3): array
     {
         $weeks = [];
-        for ($i = $count; $i >= 1; $i--) {
+        for ($i = $count; $i >= 1; --$i) {
             $weeks[] = $this->week->minusWeeks($i);
         }
 
@@ -69,7 +65,7 @@ final class WeekPaginator implements DatePaginator
         $maxFuture = $this->clockProvider->createLocalDate();
 
         $weeks = [];
-        for ($i = 1; $i <= $count; $i++) {
+        for ($i = 1; $i <= $count; ++$i) {
             $nextWeek = $this->week->plusWeeks($i);
             if ($nextWeek->getFirstDay()->isAfter($maxFuture)) {
                 break;

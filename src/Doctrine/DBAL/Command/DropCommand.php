@@ -19,30 +19,27 @@ final class DropCommand extends Command
     /**
      * @var int
      */
-    public const RETURN_CODE_NOT_DROP = 1;
+    public const int RETURN_CODE_NOT_DROP = 1;
 
     /**
      * @var int
      */
-    public const RETURN_CODE_NO_FORCE = 2;
+    public const int RETURN_CODE_NO_FORCE = 2;
 
     /**
      * @var int
      */
-    public const RETURN_CODE_DOES_NOT_EXIST = 3;
+    public const int RETURN_CODE_DOES_NOT_EXIST = 3;
 
     /**
      * @var string string
      */
     protected static $defaultName = 'dbal:database:drop';
 
-    private ManagerRegistry $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $managerRegistry,
+    ) {
         parent::__construct();
-
-        $this->managerRegistry = $managerRegistry;
     }
 
     protected function configure(): void
@@ -50,7 +47,12 @@ final class DropCommand extends Command
         $this->setName(self::$defaultName);
         $this->setDescription('Drops the configured database');
 
-        $this->addOption('connection', 'c', InputOption::VALUE_OPTIONAL, 'The connection to use for this command');
+        $this->addOption(
+            'connection',
+            'c',
+            InputOption::VALUE_OPTIONAL,
+            'The connection to use for this command'
+        );
         $this->addOption(
             'if-exists',
             null,

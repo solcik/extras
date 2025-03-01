@@ -6,13 +6,11 @@ namespace Solcik\Latte\Runtime\Filter;
 
 use Solcik\Intl\IntlFormatter;
 
-final class NumberFilter
+final readonly class NumberFilter
 {
-    private IntlFormatter $intlFormatter;
-
-    public function __construct(IntlFormatter $intlFormatter)
-    {
-        $this->intlFormatter = $intlFormatter;
+    public function __construct(
+        private IntlFormatter $intlFormatter,
+    ) {
     }
 
     public function __invoke($number, int $scale = 0): string

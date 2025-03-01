@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Solcik\Exception\Runtime\Acl;
 
 use Solcik\Exception\Runtime\EntityNotFoundException;
+
 use function Safe\sprintf;
 
 final class UserNotFoundByEmail extends EntityNotFoundException
 {
-    private string $email;
+    private readonly string $email;
 
     public function __construct(string $email)
     {

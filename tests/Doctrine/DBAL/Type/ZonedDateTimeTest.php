@@ -13,7 +13,7 @@ use Solcik\Doctrine\DBAL\Type\ZonedDateTimeType;
 
 final class ZonedDateTimeTest extends TestCase
 {
-    public const ZONE = 'Europe/Prague';
+    public const string ZONE = 'Europe/Prague';
 
     public function testDatabasePlatform(): void
     {
@@ -41,9 +41,7 @@ final class ZonedDateTimeTest extends TestCase
         self::assertNull($converted);
     }
 
-    /**
-     * @dataProvider provideToDatabase
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideToDatabase')]
     public function testConvertToDatabaseValue(string $expected, ZonedDateTime $value): void
     {
         $platform = new PostgreSQL100Platform();
@@ -65,11 +63,17 @@ final class ZonedDateTimeTest extends TestCase
             ],
             [
                 '2020-07-19 06:56:50.123456 Z',
-                ZonedDateTime::of(LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789), TimeZone::parse('Z')),
+                ZonedDateTime::of(
+                    LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789),
+                    TimeZone::parse('Z')
+                ),
             ],
             [
                 '2020-07-19 06:56:50.123456 +02:00',
-                ZonedDateTime::of(LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789), TimeZone::parse('+02:00')),
+                ZonedDateTime::of(
+                    LocalDateTime::of(2020, 07, 19, 6, 56, 50, 123456789),
+                    TimeZone::parse('+02:00')
+                ),
             ],
         ];
     }
@@ -83,9 +87,7 @@ final class ZonedDateTimeTest extends TestCase
         self::assertNull($converted);
     }
 
-    /**
-     * @dataProvider provideToPHP
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideToPHP')]
     public function testConvertToPHPValue(string $expected, string $value, ?string $timeZone = null): void
     {
         $platform = new PostgreSQL100Platform();
@@ -105,9 +107,17 @@ final class ZonedDateTimeTest extends TestCase
             ['2020-07-19T06:56:50+02:00[Europe/Prague]', '2020-07-19 06:56:50 +02', self::ZONE],
             ['2020-07-19T06:56:50+02:00[Europe/Prague]', '2020-07-19 06:56:50 +02:00', self::ZONE],
             ['2020-07-19T06:56:50.123456+02:00[Europe/Prague]', '2020-07-19 06:56:50.123456+02', self::ZONE],
-            ['2020-07-19T06:56:50.123456+02:00[Europe/Prague]', '2020-07-19 06:56:50.123456+02:00', self::ZONE],
+            [
+                '2020-07-19T06:56:50.123456+02:00[Europe/Prague]',
+                '2020-07-19 06:56:50.123456+02:00',
+                self::ZONE,
+            ],
             ['2020-07-19T06:56:50.123456+02:00[Europe/Prague]', '2020-07-19 06:56:50.123456 +02', self::ZONE],
-            ['2020-07-19T06:56:50.123456+02:00[Europe/Prague]', '2020-07-19 06:56:50.123456 +02:00', self::ZONE],
+            [
+                '2020-07-19T06:56:50.123456+02:00[Europe/Prague]',
+                '2020-07-19 06:56:50.123456 +02:00',
+                self::ZONE,
+            ],
             [
                 // Default TimeZone in PHP is set to Europe/Prague
                 '2020-07-19T04:56:50Z',

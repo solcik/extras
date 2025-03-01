@@ -19,13 +19,13 @@ class LocalDateInput extends TextInput
     public static array $additionalHtmlClasses = [];
 
     /**
-     * This errorMessage is added for invalid format
+     * This errorMessage is added for invalid format.
      */
     public string $invalidFormatMessage = 'Date format is invalid/incorrect.';
 
     private bool $isValidated = false;
 
-    private DateTimeParser $parser;
+    private readonly DateTimeParser $parser;
 
     public function __construct(?string $label = null, ?DateTimeParser $parser = null)
     {
@@ -39,7 +39,7 @@ class LocalDateInput extends TextInput
                     $this->parser->parse($input->value);
 
                     return true;
-                } catch (DateTimeParseException $e) {
+                } catch (DateTimeParseException) {
                     return false;
                 }
             },
@@ -59,11 +59,13 @@ class LocalDateInput extends TextInput
         return $this;
     }
 
+    #[\Override]
     public function cleanErrors(): void
     {
         $this->isValidated = false;
     }
 
+    #[\Override]
     public function getValue()
     {
         $val = parent::getValue();
@@ -78,6 +80,7 @@ class LocalDateInput extends TextInput
         return LocalDate::parse($val, $this->parser);
     }
 
+    #[\Override]
     public function setValue($value)
     {
         if ($value === null) {
@@ -93,6 +96,7 @@ class LocalDateInput extends TextInput
         return $this;
     }
 
+    #[\Override]
     public function getControl(): Html
     {
         $control = parent::getControl();
@@ -101,6 +105,7 @@ class LocalDateInput extends TextInput
         return $control;
     }
 
+    #[\Override]
     public function validate(): void
     {
         parent::validate();

@@ -41,9 +41,7 @@ trait CompiledContainer
 
         $configurator->defaultExtensions = array_filter(
             $configurator->defaultExtensions,
-            static function (string $key) use ($extensions) {
-                return in_array($key, $extensions, true);
-            },
+            static fn (string $key): bool => in_array($key, $extensions, true),
             ARRAY_FILTER_USE_KEY
         );
 

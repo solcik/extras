@@ -5,26 +5,24 @@ declare(strict_types=1);
 namespace Solcik\Intl;
 
 use Brick\Math\BigNumber;
-use Locale;
 use Nette\Localization\ITranslator;
-use NumberFormatter;
 use Symfony\Component\Translation\Translator;
 
-final class IntlFormatter
+final readonly class IntlFormatter
 {
     private string $locale;
 
     public function __construct(ITranslator $translator)
     {
         assert($translator instanceof Translator);
-        Locale::setDefault($translator->getLocale());
-        $this->locale = Locale::getDefault();
+        \Locale::setDefault($translator->getLocale());
+        $this->locale = \Locale::getDefault();
     }
 
     public function percentage(BigNumber $number, int $scale = 0): string
     {
-        $fmt = new NumberFormatter($this->locale, NumberFormatter::PERCENT);
-        $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $scale);
+        $fmt = new \NumberFormatter($this->locale, \NumberFormatter::PERCENT);
+        $fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $scale);
 
         return $fmt->format($number->toFloat());
     }
@@ -38,10 +36,10 @@ final class IntlFormatter
             $value = $value->toFloat();
         }
 
-        $fmt = new NumberFormatter($this->locale, NumberFormatter::DECIMAL);
-        $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $scale);
-        $fmt->setAttribute(NumberFormatter::GROUPING_USED, 1);
-        $fmt->setSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, $grouping);
+        $fmt = new \NumberFormatter($this->locale, \NumberFormatter::DECIMAL);
+        $fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $scale);
+        $fmt->setAttribute(\NumberFormatter::GROUPING_USED, 1);
+        $fmt->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, $grouping);
 
         return $fmt->format($value);
     }

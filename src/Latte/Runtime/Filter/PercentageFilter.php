@@ -8,13 +8,11 @@ use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use Solcik\Intl\IntlFormatter;
 
-final class PercentageFilter
+final readonly class PercentageFilter
 {
-    private IntlFormatter $intlFormatter;
-
-    public function __construct(IntlFormatter $intlFormatter)
-    {
-        $this->intlFormatter = $intlFormatter;
+    public function __construct(
+        private IntlFormatter $intlFormatter,
+    ) {
     }
 
     public function __invoke(BigDecimal $number, int $scale = 0): string

@@ -9,7 +9,7 @@ use Nette\Utils\Html;
 final class JavaScriptControl extends BaseControl
 {
     /**
-     * Get script element
+     * Get script element.
      */
     public function getElement(string $source, bool $inline = false): ?Html
     {

@@ -20,8 +20,9 @@ final class SchemaContainer extends BaseSchemaContainer
      *
      * @param object $resource
      */
+    #[\Override]
     protected function getResourceType($resource): string
     {
-        return ClassUtils::getRealClass(get_class($resource));
+        return ClassUtils::getRealClass($resource::class);
     }
 }

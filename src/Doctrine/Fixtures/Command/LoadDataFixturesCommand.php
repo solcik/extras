@@ -9,7 +9,6 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
-use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,16 +23,11 @@ class LoadDataFixturesCommand extends Command
      */
     protected static $defaultName = 'doctrine:fixtures:load';
 
-    private Loader $loader;
-
-    private ManagerRegistry $managerRegistry;
-
-    public function __construct(Loader $loader, ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private readonly Loader $loader,
+        private readonly ManagerRegistry $managerRegistry,
+    ) {
         parent::__construct();
-
-        $this->loader = $loader;
-        $this->managerRegistry = $managerRegistry;
     }
 
     protected function configure(): void
@@ -53,7 +47,12 @@ class LoadDataFixturesCommand extends Command
                 InputOption::VALUE_NONE,
                 'Append the data fixtures instead of deleting all data from the database first.'
             )
-            ->addOption('em', null, InputOption::VALUE_REQUIRED, 'The entity manager to use for this command.')
+            ->addOption(
+                'em',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The entity manager to use for this command.'
+            )
             ->addOption(
                 'purge-with-truncate',
                 null,
@@ -108,14 +107,17 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
 
         $fixtures = $this->loader->getFixtures();
         if ($fixtures === []) {
-            throw new InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- " . implode("\n- ", $paths))
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find any fixtures to load in: %s',
+                "\n\n- " . implode("\n- ", $paths)
+            ));
         }
 
         $purger = new ORMPurger($em);
         $purger->setPurgeMode(
-            $input->getOption('purge-with-truncate') ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
+            $input->getOption(
+                'purge-with-truncate'
+            ) ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
         );
 
         $executor = new ORMExecutor($em, $purger);
@@ -133,7 +135,7 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
         InputInterface $input,
         OutputInterface $output,
         string $question,
-        bool $default
+        bool $default,
     ): bool {
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelperSet()->get('question');

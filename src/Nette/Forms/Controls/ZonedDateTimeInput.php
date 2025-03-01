@@ -12,6 +12,7 @@ class ZonedDateTimeInput extends LocalDateTimeInput
 {
     public static string $timezone = 'Europe/Prague';
 
+    #[\Override]
     public function getValue()
     {
         $val = parent::getValue();
@@ -28,6 +29,7 @@ class ZonedDateTimeInput extends LocalDateTimeInput
         return $val->atTimeZone(TimeZone::parse(self::$timezone));
     }
 
+    #[\Override]
     public function setValue($value)
     {
         if ($value === null) {

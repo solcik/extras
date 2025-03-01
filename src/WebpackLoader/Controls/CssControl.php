@@ -22,7 +22,7 @@ final class CssControl extends BaseControl
     }
 
     /**
-     * Set media
+     * Set media.
      *
      * @return $this
      */
@@ -39,7 +39,7 @@ final class CssControl extends BaseControl
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @return $this
      */
@@ -56,7 +56,7 @@ final class CssControl extends BaseControl
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @return $this
      */
@@ -76,7 +76,7 @@ final class CssControl extends BaseControl
     }
 
     /**
-     * Set alternate
+     * Set alternate.
      *
      * @return $this
      */
@@ -88,7 +88,7 @@ final class CssControl extends BaseControl
     }
 
     /**
-     * Get link element
+     * Get link element.
      */
     public function getElement(string $source, bool $inline = false): ?Html
     {

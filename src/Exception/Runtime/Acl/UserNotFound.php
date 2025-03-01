@@ -9,7 +9,7 @@ use Solcik\Exception\Runtime\EntityNotFoundException;
 
 final class UserNotFound extends EntityNotFoundException
 {
-    private UuidInterface $id;
+    private readonly UuidInterface $id;
 
     public function __construct(UuidInterface $id)
     {

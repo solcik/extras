@@ -13,13 +13,11 @@ use function Laminas\Diactoros\marshalHeadersFromSapi;
 use function Laminas\Diactoros\normalizeServer;
 use function Laminas\Diactoros\normalizeUploadedFiles;
 
-final class RequestFactory
+final readonly class RequestFactory
 {
-    private string $baseUri = '';
-
-    public function __construct(string $baseUri)
-    {
-        $this->baseUri = $baseUri;
+    public function __construct(
+        private string $baseUri,
+    ) {
     }
 
     public function get(string $uri, array $query = [], array $headers = []): ServerRequestInterface
@@ -35,7 +33,7 @@ final class RequestFactory
         array $cookies = [],
         array $files = [],
         array $headers = [],
-        array $server = []
+        array $server = [],
     ): ServerRequestInterface {
         $serverFull = normalizeServer($server);
         $files = normalizeUploadedFiles($files);
@@ -81,8 +79,12 @@ final class RequestFactory
         return $this->prepareRequest('DELETE', $uri, [], $body, [], [], $headers);
     }
 
-    public function json(string $method, string $uri, array $body = [], array $headers = []): ServerRequestInterface
-    {
+    public function json(
+        string $method,
+        string $uri,
+        array $body = [],
+        array $headers = [],
+    ): ServerRequestInterface {
         $content = json_encode($body);
 
         $headers = array_merge(

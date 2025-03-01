@@ -33,7 +33,7 @@ abstract class BaseControl extends Control
     }
 
     /**
-     * Get html element including generated content
+     * Get html element including generated content.
      */
     abstract public function getElement(string $source, bool $inline = false): ?Html;
 }

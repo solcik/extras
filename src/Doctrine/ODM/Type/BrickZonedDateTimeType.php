@@ -21,7 +21,7 @@ class BrickZonedDateTimeType extends Type
 
     /**
      * Return the string body of a PHP closure that will receive $value and store the result of a conversion in a
-     * $return variable
+     * $return variable.
      */
     public function closureToPHP(): string
     {
@@ -29,7 +29,7 @@ class BrickZonedDateTimeType extends Type
     }
 
     /**
-     * This is called to convert a PHP value to its Mongo equivalent
+     * This is called to convert a PHP value to its Mongo equivalent.
      */
     public function convertToDatabaseValue(ZonedDateTime $value): UTCDateTime
     {

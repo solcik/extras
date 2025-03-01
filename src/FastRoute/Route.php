@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace Solcik\FastRoute;
 
-final class Route
+final readonly class Route
 {
-    private string $method;
-
-    private string $path;
-
-    private string $handler;
-
-    public function __construct(string $method, string $path, string $handler)
-    {
-        $this->method = $method;
-        $this->path = $path;
-        $this->handler = $handler;
+    public function __construct(
+        private string $method,
+        private string $path,
+        private string $handler,
+    ) {
     }
 
     public function getMethod(): string

@@ -10,20 +10,13 @@ use Nette\DI\MissingServiceException;
 
 class FixturesLoader extends Loader
 {
-    private Container $container;
-
-    /**
-     * @var string[]
-     */
-    private array $paths;
-
     /**
      * @param string[] $paths
      */
-    public function __construct(array $paths, Container $container)
-    {
-        $this->paths = $paths;
-        $this->container = $container;
+    public function __construct(
+        private readonly array $paths,
+        private readonly Container $container,
+    ) {
     }
 
     /**
@@ -56,11 +49,12 @@ class FixturesLoader extends Loader
     /**
      * @param string $class
      */
+    #[\Override]
     protected function createFixture($class)
     {
         try {
             return $this->container->getByType($class);
-        } catch (MissingServiceException $e) {
+        } catch (MissingServiceException) {
             return parent::createFixture($class);
         }
     }

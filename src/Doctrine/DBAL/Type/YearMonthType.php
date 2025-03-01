@@ -16,12 +16,15 @@ final class YearMonthType extends StringType
 {
     public const string NAME = 'brick_yearmonth';
 
+    #[\Override]
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         $column['length'] = 7;
+
         return $platform->getStringTypeDeclarationSQL($column);
     }
 
+    #[\Override]
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -35,6 +38,7 @@ final class YearMonthType extends StringType
         throw InvalidType::new($value, self::NAME, [YearMonth::class]);
     }
 
+    #[\Override]
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?YearMonth
     {
         if ($value === null) {

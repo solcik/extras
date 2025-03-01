@@ -9,6 +9,7 @@ use Nette\Forms\Controls\TextInput;
 
 final class Form extends NetteForm
 {
+    #[\Override]
     public function addFloat(string $name, ?string $label = null): TextInput
     {
         $input = $this->addText($name, $label);

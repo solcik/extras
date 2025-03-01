@@ -9,20 +9,19 @@ use Solcik\WebpackLoader\Controls\JavaScriptControl;
 
 final class ControlFactory
 {
-    private string $wwwDir;
-
     private array $javascripts = [];
 
     private array $styles = [];
 
-    public function __construct(string $config, string $wwwDir)
-    {
+    public function __construct(
+        string $config,
+        private readonly string $wwwDir,
+    ) {
         $string = file_get_contents($config);
         $webpackJson = json_decode($string, true);
 
         $this->javascripts = $webpackJson;
         $this->styles = $webpackJson;
-        $this->wwwDir = $wwwDir;
     }
 
     public function createCssControl(): CssControl

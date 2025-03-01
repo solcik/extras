@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Solcik\Doctrine\DBAL\Type;
 
 use Brick\DateTime\LocalDate;
-use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Exception\InvalidFormat;
@@ -26,6 +25,7 @@ final class LocalDateType extends Type
      *
      * @throws ConversionException
      */
+    #[\Override]
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -44,6 +44,7 @@ final class LocalDateType extends Type
      *
      * @throws ConversionException
      */
+    #[\Override]
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?LocalDate
     {
         if ($value === null) {
@@ -58,7 +59,7 @@ final class LocalDateType extends Type
             return null;
         }
 
-        $dateTime = DateTimeImmutable::createFromFormat('!' . $platform->getDateFormatString(), $value);
+        $dateTime = \DateTimeImmutable::createFromFormat('!' . $platform->getDateFormatString(), $value);
 
         if ($dateTime === false) {
             throw InvalidFormat::new($value, self::NAME, $platform->getDateFormatString());

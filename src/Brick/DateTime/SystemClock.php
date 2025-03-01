@@ -17,9 +17,9 @@ use Brick\DateTime\YearMonth;
 use Brick\DateTime\YearWeek;
 use Brick\DateTime\ZonedDateTime;
 
-final class SystemClock implements Clock
+final readonly class SystemClock implements Clock
 {
-    public const ZONE = 'Europe/Prague';
+    public const string ZONE = 'Europe/Prague';
 
     private TimeZone $timeZone;
 

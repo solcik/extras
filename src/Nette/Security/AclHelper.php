@@ -9,45 +9,43 @@ use Nette\ComponentModel\IComponent;
 use Nette\Security\User;
 use Nette\Utils\Strings;
 
-final class AclHelper
+final readonly class AclHelper
 {
     /**
      * @var int
      */
-    public const INACTIVITY = 0b0001;
+    public const int INACTIVITY = 0b0001;
 
     /**
      * @var int
      */
-    public const LOGIN_REQUIRED = 0b0010;
+    public const int LOGIN_REQUIRED = 0b0010;
 
     /**
      * @var int
      */
-    public const NOT_ALLOWED = 0b0100;
+    public const int NOT_ALLOWED = 0b0100;
 
     /**
      * @var string
      */
-    public const ALL_COMPONENTS = '*';
+    public const string ALL_COMPONENTS = '*';
 
     /**
      * @var string
      */
-    public const DYNAMIC_NAME_PATTERN = '#^[1-9][0-9]*\z#';
+    public const string DYNAMIC_NAME_PATTERN = '#^[1-9][0-9]*\z#';
 
-    private User $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
+    public function __construct(
+        private User $user,
+    ) {
     }
 
     public function checkPrivileges(Presenter $presenter): int
     {
         $flag = 0;
 
-        $resource = get_class($presenter);
+        $resource = $presenter::class;
         $action = $presenter->getAction();
         $signal = $presenter->getSignal();
 
@@ -105,10 +103,10 @@ final class AclHelper
 
         // generate all action combinations
         $count = count($dynamics);
-        for ($i = 0; $i < (1 << $count); $i++) {
+        for ($i = 0; $i < (1 << $count); ++$i) {
             $tmp = $parts;
 
-            for ($j = 0; $j < $count; $j++) {
+            for ($j = 0; $j < $count; ++$j) {
                 $decider = ($i >> ($count - $j - 1) & 1 << $j) > 0;
                 $tmp[$dynamics[$j]] = $decider ? self::ALL_COMPONENTS : $parts[$dynamics[$j]];
             }

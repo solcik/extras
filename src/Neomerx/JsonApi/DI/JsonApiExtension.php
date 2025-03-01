@@ -11,10 +11,10 @@ use Nette\Schema\Schema;
 use Solcik\Neomerx\JsonApi\Encoder;
 use Solcik\Neomerx\JsonApi\Factory;
 use Solcik\Neomerx\JsonApi\SchemaContainer;
-use stdClass;
 
 final class JsonApiExtension extends CompilerExtension
 {
+    #[\Override]
     public function getConfigSchema(): Schema
     {
         return Expect::structure([
@@ -40,7 +40,7 @@ final class JsonApiExtension extends CompilerExtension
             $container->addSetup('registerProvider', [$def]);
         }
 
-        /** @var stdClass $config */
+        /** @var \stdClass $config */
         $config = $this->getConfig();
 
         $builder

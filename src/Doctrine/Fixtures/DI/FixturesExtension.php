@@ -10,13 +10,13 @@ use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Solcik\Doctrine\Fixtures\Command\LoadDataFixturesCommand;
 use Solcik\Doctrine\Fixtures\Loader\FixturesLoader;
-use stdClass;
 
 /**
- * @property-read stdClass $config
+ * @property \stdClass $config
  */
 class FixturesExtension extends CompilerExtension
 {
+    #[\Override]
     public function getConfigSchema(): Schema
     {
         return Expect::structure([
