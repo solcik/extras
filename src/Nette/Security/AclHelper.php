@@ -51,7 +51,7 @@ final readonly class AclHelper
 
         // just inform the user about the logout
         if (!$this->user->isLoggedIn()
-            && $this->user->getLogoutReason() === User::INACTIVITY
+            && $this->user->getLogoutReason() === User::LogoutInactivity
             && $action !== 'logout'
         ) {
             $flag |= static::INACTIVITY;
@@ -91,8 +91,8 @@ final readonly class AclHelper
         $actions = [];
         $dynamics = [];
         $parts = explode(
-            IComponent::NAME_SEPARATOR,
-            ltrim(implode(IComponent::NAME_SEPARATOR, $signal), IComponent::NAME_SEPARATOR)
+            IComponent::NameSeparator,
+            ltrim(implode(IComponent::NameSeparator, $signal), IComponent::NameSeparator)
         );
 
         foreach ($parts as $key => $part) {
@@ -111,7 +111,7 @@ final readonly class AclHelper
                 $tmp[$dynamics[$j]] = $decider ? self::ALL_COMPONENTS : $parts[$dynamics[$j]];
             }
 
-            $actions[] = implode(IComponent::NAME_SEPARATOR, $tmp) . '!';
+            $actions[] = implode(IComponent::NameSeparator, $tmp) . '!';
         }
 
         return $actions;

@@ -13,9 +13,9 @@ final class Form extends NetteForm
     public function addFloat(string $name, string|\Stringable|null $label = null): TextInput
     {
         $input = $this->addText($name, $label);
-        $input->addCondition(self::FILLED)
-            ->addRule(self::MAX_LENGTH, null, 255)
-            ->addRule(self::FLOAT);
+        $input->addCondition(self::Filled)
+            ->addRule(self::MaxLength, null, 255)
+            ->addRule(self::Float);
 
         return $input;
     }
@@ -23,9 +23,9 @@ final class Form extends NetteForm
     public function addNumeric(string $name, ?string $label = null): TextInput
     {
         $input = $this->addText($name, $label);
-        $input->addCondition(self::FILLED)
-            ->addRule(self::MAX_LENGTH, null, 255)
-            ->addRule(self::NUMERIC);
+        $input->addCondition(self::Filled)
+            ->addRule(self::MaxLength, null, 255)
+            ->addRule(self::Numeric);
 
         return $input;
     }

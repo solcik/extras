@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Solcik\Intl;
 
 use Brick\Math\BigNumber;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator as NetteTranslator;
 use Symfony\Component\Translation\Translator;
 
 final readonly class IntlFormatter
 {
     private string $locale;
 
-    public function __construct(ITranslator $translator)
+    public function __construct(NetteTranslator $translator)
     {
         assert($translator instanceof Translator);
         \Locale::setDefault($translator->getLocale());

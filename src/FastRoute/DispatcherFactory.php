@@ -8,13 +8,13 @@ use FastRoute\Dispatcher;
 use FastRoute\Dispatcher\GroupCountBased;
 use FastRoute\RouteCollector;
 use Nette\Caching\Cache;
-use Nette\Caching\IStorage;
+use Nette\Caching\Storage;
 
 final readonly class DispatcherFactory
 {
     private Cache $cache;
 
-    public function __construct(IStorage $storage)
+    public function __construct(Storage $storage)
     {
         $this->cache = new Cache($storage, 'http.api.dispatcher');
     }
@@ -42,7 +42,7 @@ final readonly class DispatcherFactory
                     'routes',
                     $data,
                     [
-                        Cache::FILES => [__DIR__ . '/../../../config/api/config/routes.php'],
+                        Cache::Files => [__DIR__ . '/../../../config/api/config/routes.php'],
                     ]
                 );
             }

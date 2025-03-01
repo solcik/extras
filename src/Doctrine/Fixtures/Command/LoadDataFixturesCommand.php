@@ -121,11 +121,11 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
             ));
         }
 
+        $purgeWithTruncate = (bool) $input->getOption('purge-with-truncate');
+
         $purger = new ORMPurger($em);
         $purger->setPurgeMode(
-            $input->getOption(
-                'purge-with-truncate'
-            ) ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
+            $purgeWithTruncate ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
         );
 
         $executor = new ORMExecutor($em, $purger);

@@ -115,7 +115,7 @@ final class SelectBox extends ChoiceControl
         $translator = $this->getForm()->getTranslator();
 
         $items = $this->prompt === false ? [] : [
-            '' => $translator ? $translator->translate($this->prompt) : $this->prompt,
+            '' => $translator !== null ? $translator->translate($this->prompt) : $this->prompt,
         ];
         foreach ($this->options as $key => $value) {
             $items[is_array($value) ? $this->translate($key) : $key] = $this->translate($value);
@@ -124,7 +124,7 @@ final class SelectBox extends ChoiceControl
         return Helpers::createSelectBox(
             $items,
             [
-                'disabled:' => is_array($this->disabled) ? $this->disabled : null,
+                'disabled:' => $this->disabled,
             ] + $this->optionAttributes,
             $this->value
         )->addAttributes(parent::getControl()->attrs);
