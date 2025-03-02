@@ -9,7 +9,9 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use Psr\Log\AbstractLogger;
 use Solcik\Doctrine\Fixtures\Loader\FixturesLoader;
+use Stringable;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -17,9 +19,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function assert;
 use function is_bool;
+use function sprintf;
 
 class LoadDataFixturesCommand extends Command
 {
@@ -64,7 +68,8 @@ class LoadDataFixturesCommand extends Command
                 InputOption::VALUE_NONE,
                 'Purge data by using a database-level TRUNCATE statement'
             )
-            ->setHelp('
+            ->setHelp(
+                '
 The <info>doctrine:fixtures:load</info> command loads data fixtures from your config:
 
   <info>doctrine:fixtures:load</info>
@@ -81,11 +86,15 @@ By default Doctrine Data Fixtures uses DELETE statements to drop the existing ro
 the database. If you want to use a TRUNCATE statement instead you can use the <info>--purge-with-truncate</info> flag:
 
   <info>doctrine:fixtures:load --purge-with-truncate</info>
-');
+'
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+
         /** @var EntityManager $em */
         $em = $this->managerRegistry->getManager($input->getOption('em'));
 
@@ -125,12 +134,20 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
             $purgeWithTruncate ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
         );
 
-        $executor = new ORMExecutor($em, $purger);
-        $executor->setLogger(
-            static function ($message) use ($output): void {
-                $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
+        $logger = new class($io) extends AbstractLogger {
+            public function __construct(
+                private readonly SymfonyStyle $io,
+            ) {
             }
-        );
+
+            public function log(mixed $level, string|Stringable $message, array $context = []): void
+            {
+                $this->io->text(sprintf('  <comment>></comment> <info>%s</info>', $message));
+            }
+        };
+
+        $executor = new ORMExecutor($em, $purger);
+        $executor->setLogger($logger);
         $executor->execute($fixtures, $input->getOption('append'));
 
         return 0;
