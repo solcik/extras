@@ -102,7 +102,7 @@ the database. If you want to use a TRUNCATE statement instead you can use the <i
 
         $dirOrFile = $input->getOption('fixtures');
 
-        if (\is_string($dirOrFile) || \is_array($dirOrFile)) {
+        if (\is_string($dirOrFile) || (\is_array($dirOrFile) && $dirOrFile !== [])) {
             $paths = \is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
             $this->loader->loadPaths($paths);
         } else {
