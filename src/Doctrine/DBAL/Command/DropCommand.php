@@ -64,7 +64,7 @@ EOT
 
         $params = $connection->getParams();
 
-        if (isset($params['primary'])) {
+        if (isset($params['primary']) && $params['primary'] !== []) {
             $params = $params['primary'];
         }
 
