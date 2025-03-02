@@ -2,13 +2,10 @@ includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - ./phpstan-ignore.neon
 
 parameters:
     level: max
     paths:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
-    ignoreErrors:
-        # ToDo
-        - identifier: argument.type
-        - identifier: missingType.iterableValue

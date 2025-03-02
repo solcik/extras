@@ -1,0 +1,289 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$name of method Solcik\\Doctrine\\DBAL\\Command\\DoctrineCommand\:\:getDoctrineConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/DBAL/Command/CreateCommand.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Doctrine/DBAL/Command/CreateCommand.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Solcik\\Doctrine\\DBAL\\Command\\DoctrineCommand\:\:getDoctrineConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/DBAL/Command/DropCommand.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/Doctrine/DBAL/Command/DropCommand.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Doctrine\\Persistence\\ManagerRegistry\:\:getManager\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/Fixtures/Command/LoadDataFixturesCommand.php
+
+		-
+			message: '#^Parameter \#1 \$paths of method Solcik\\Doctrine\\Fixtures\\Loader\\FixturesLoader\:\:loadPaths\(\) expects array\<string\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/Fixtures/Command/LoadDataFixturesCommand.php
+
+		-
+			message: '#^Parameter \#2 \$append of method Doctrine\\Common\\DataFixtures\\Executor\\ORMExecutor\:\:execute\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Doctrine/Fixtures/Command/LoadDataFixturesCommand.php
+
+		-
+			message: '#^Method Solcik\\Latte\\Runtime\\Filter\\JsonEncodeFilter\:\:__invoke\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Latte/Runtime/Filter/JsonEncodeFilter.php
+
+		-
+			message: '#^Method Solcik\\Neomerx\\JsonApi\\Factory\:\:createContainer\(\) has parameter \$providers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Neomerx/JsonApi/Factory.php
+
+		-
+			message: '#^Parameter \#2 \$schema of method Neomerx\\JsonApi\\Schema\\SchemaContainer\:\:register\(\) expects Closure\|string, Neomerx\\JsonApi\\Contracts\\Schema\\SchemaInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Neomerx/JsonApi/SchemaContainer.php
+
+		-
+			message: '#^Parameter \#1 \$text of method Brick\\DateTime\\Parser\\DateTimeParser\:\:parse\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Nette/Forms/Controls/LocalDateInput.php
+
+		-
+			message: '#^Parameter \#1 \$text of static method Brick\\DateTime\\LocalDate\:\:parse\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Nette/Forms/Controls/LocalDateInput.php
+
+		-
+			message: '#^Parameter \#1 \$text of method Brick\\DateTime\\Parser\\DateTimeParser\:\:parse\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Nette/Forms/Controls/LocalDateTimeInput.php
+
+		-
+			message: '#^Parameter \#1 \$text of static method Brick\\DateTime\\LocalDateTime\:\:parse\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Nette/Forms/Controls/LocalDateTimeInput.php
+
+		-
+			message: '#^Method Solcik\\Nette\\Forms\\Controls\\SelectBox\:\:__construct\(\) has parameter \$items with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Method Solcik\\Nette\\Forms\\Controls\\SelectBox\:\:addOptionAttributes\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Method Solcik\\Nette\\Forms\\Controls\\SelectBox\:\:getOptionAttributes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Method Solcik\\Nette\\Forms\\Controls\\SelectBox\:\:setItems\(\) has parameter \$items with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Parameter \#1 \$message of method Nette\\Localization\\Translator\:\:translate\(\) expects string\|Stringable, object\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Parameter \#2 \$errorMessage of method Nette\\Forms\\Rules\:\:addRule\(\) expects string\|Stringable\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Property Solcik\\Nette\\Forms\\Controls\\SelectBox\:\:\$optionAttributes type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Property Solcik\\Nette\\Forms\\Controls\\SelectBox\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Forms/Controls/SelectBox.php
+
+		-
+			message: '#^Method Solcik\\Nette\\Security\\AclHelper\:\:checkSignalPrivilege\(\) has parameter \$signal with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Security/AclHelper.php
+
+		-
+			message: '#^Method Solcik\\Nette\\Security\\AclHelper\:\:signalToActions\(\) has parameter \$signal with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Nette/Security/AclHelper.php
+
+		-
+			message: '#^Parameter \#1 \$options of function Sentry\\init expects array\{attach_metric_code_locations\?\: bool, attach_stacktrace\?\: bool, before_breadcrumb\?\: callable\(\)\: mixed, before_send\?\: callable\(\)\: mixed, before_send_check_in\?\: callable\(\)\: mixed, before_send_transaction\?\: callable\(\)\: mixed, capture_silenced_errors\?\: bool, context_lines\?\: int\|null, \.\.\.\}, non\-empty\-array\<string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Sentry/ClientFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:delete\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:delete\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:get\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:get\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:json\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:json\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:patch\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:patch\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:post\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:post\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) has parameter \$cookies with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) has parameter \$files with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) has parameter \$server with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:put\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Method Solcik\\Tester\\RequestFactory\:\:put\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Parameter \#1 \$string of function mb_strlen expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Parameter \#4 \$body of method Solcik\\Tester\\RequestFactory\:\:prepareRequest\(\) expects array, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tester/RequestFactory.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WebpackLoader/ControlFactory.php
+
+		-
+			message: '#^Method Solcik\\Test\\Doctrine\\DBAL\\Type\\ZonedDateTimeTest\:\:provideToDatabase\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Doctrine/DBAL/Type/ZonedDateTimeTest.php
+
+		-
+			message: '#^Method Solcik\\Test\\Doctrine\\DBAL\\Type\\ZonedDateTimeTest\:\:provideToPHP\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Doctrine/DBAL/Type/ZonedDateTimeTest.php
