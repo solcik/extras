@@ -7,20 +7,17 @@ namespace Solcik\Doctrine\DBAL\Command;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
+#[AsCommand(name: 'dbal:database:create', description: 'Creates the configured database')]
 final class CreateCommand extends DoctrineCommand
 {
-    protected static string $defaultName = 'dbal:database:create';
-
     protected function configure(): void
     {
-        $this->setName(self::$defaultName);
-        $this->setDescription('Creates the configured database');
-
         $this->addOption(
             'connection',
             'c',

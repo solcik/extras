@@ -8,11 +8,13 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\SQLiteSchemaManager;
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
+#[AsCommand(name: 'dbal:database:drop', description: 'Drops the configured database')]
 final class DropCommand extends DoctrineCommand
 {
     public const int RETURN_CODE_NOT_DROP = 1;
@@ -21,13 +23,8 @@ final class DropCommand extends DoctrineCommand
 
     public const int RETURN_CODE_DOES_NOT_EXIST = 3;
 
-    protected static string $defaultName = 'dbal:database:drop';
-
     protected function configure(): void
     {
-        $this->setName(self::$defaultName);
-        $this->setDescription('Drops the configured database');
-
         $this->addOption(
             'connection',
             'c',
