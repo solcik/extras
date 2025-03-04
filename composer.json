@@ -31,6 +31,7 @@
 		"laminas/laminas-diactoros": "^3.5",
 		"laminas/laminas-httphandlerrunner": "^2.11",
 		"latte/latte": "^3.0",
+		"mockery/mockery": "^1.6",
 		"neomerx/json-api": "^4.0",
 		"nette/application": "^3.2",
 		"nette/bootstrap": "^3.2",
