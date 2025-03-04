@@ -64,7 +64,7 @@ return RectorConfig::configure()
             LevelSetList::UP_TO_PHP_84,
         ]
     )
-    ->withTypeCoverageLevel(100)
+    ->withTypeCoverageLevel(50)
     //    ->withDeadCodeLevel(0)
-    ->withCodeQualityLevel(100)
+    ->withCodeQualityLevel(75)
 ;
